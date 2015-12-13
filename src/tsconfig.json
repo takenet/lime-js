@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "out": "lime.js",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "!node_modules/**"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "files": [
+        "Lime/Protocol/Client/Channel.ts",
+        "Lime/Protocol/Client/ClientChannel.ts",
+        "Lime/Protocol/Client/ClientChannelExtensions.ts",
+        "Lime/Protocol/Client/IChannel.ts",
+        "Lime/Protocol/Command.ts",
+        "Lime/Protocol/Envelope.ts",
+        "Lime/Protocol/Message.ts",
+        "Lime/Protocol/Network/Transport.ts",
+        "Lime/Protocol/Network/WebSocketTransport.ts",
+        "Lime/Protocol/Notification.ts",
+        "Lime/Protocol/Security/Authentication.ts",
+        "Lime/Protocol/Session.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "lime-js",
+  "version": "1.0.0",
+  "description": "JavaScript LIME implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takenet/lime-js.git"
+  },
+  "keywords": [
+    "LIME",
+    "MessagingHub",
+    "TypeScript",
+    "TCP",
+    "WebSocket",
+    "WS"
+  ],
+  "author": "Arthur Xavier <arthur@takenet.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/takenet/lime-js/issues"
+  },
+  "homepage": "https://github.com/takenet/lime-js#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-typescript": "^2.10.0"
+  }
+}
