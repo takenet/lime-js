@@ -34,31 +34,23 @@
       onOpen: function() {
         var authentication;
         if (password) {
-          var plainAuthentication = new Lime.PlainAuthentication();
-          plainAuthentication.password = btoa(password);
-          authentication = plainAuthentication;
+          authentication = new Lime.PlainAuthentication();
+          authentication.password = btoa(password);
         } else {
           authentication = new Lime.GuestAuthentication();
         }
 
         clientChannel = new Lime.ClientChannel(transport, true, true);
-        Lime.ClientChannelExtensions.establishSession(
-          clientChannel,
-          "none",
-          "none",
-          identity,
-          authentication,
-          instance,
-          {
-            onResult: function(s) {
-              utils.logMessage("Session id: " + s.id + " - State: " + s.state);
-              if (s.state === Lime.SessionState.established) {
-                connectButton.disabled = true;
-                disconnectButton.disabled = false;
-              }
-            },
-            onFailure: function(e) { utils.logMessage("An error occurred: " + e); }
-          });
+        Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, {
+          onResult: function(s) {
+            utils.logMessage("Session id: " + s.id + " - State: " + s.state);
+            if (s.state === Lime.SessionState.established) {
+              connectButton.disabled = true;
+              disconnectButton.disabled = false;
+            }
+          },
+          onFailure: function(e) { utils.logMessage("An error occurred: " + e); }
+        });
 
         clientChannel.onMessage = function(m) {
           utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
@@ -85,68 +77,52 @@
     transport.open(uri);
   }
 
-  /**
-   * @return boolean
-   */
-  function isSessionEstablished() {
-    return clientChannel !== null && clientChannel.state === Lime.SessionState.established;
-  }
-
 
   window.connect = function() {
     utils.checkMandatoryInput(identityInput);
     utils.checkMandatoryInput(instanceInput);
     utils.checkMandatoryInput(uriInput);
-
     establishSession(uriInput.value, identityInput.value, instanceInput.value, passwordInput.value);
   };
 
   window.disconnect = function() {
-    if(isSessionEstablished()) {
-      clientChannel.sendFinishingSession();
-    }
+    clientChannel.sendFinishingSession();
   };
 
   window.setPresence = function(available) {
-    if(isSessionEstablished()) {
-      var presenceCommand = {
-        id: utils.newGuid(),
-        method: Lime.CommandMethod.set,
-        uri: "/presence",
-        type: "application/vnd.lime.presence+json",
-        resource: {
-          status: available ? "available" : "unavailable"
-        }
-      };
-      clientChannel.sendCommand(presenceCommand);
-    }
+    var presenceCommand = {
+      id: utils.newGuid(),
+      method: Lime.CommandMethod.set,
+      uri: "/presence",
+      type: "application/vnd.lime.presence+json",
+      resource: {
+        status: available ? "available" : "unavailable"
+      }
+    };
+    clientChannel.sendCommand(presenceCommand);
   };
 
   window.setReceipts = function() {
-    if(isSessionEstablished()) {
-      var presenceCommand = {
-        id: utils.newGuid(),
-        method: Lime.CommandMethod.set,
-        uri: "/receipt",
-        type: "application/vnd.lime.receipt+json",
-        resource: {
-          events: [ "accepted", "validated", "authorized", "dispatched", "received", "consumed" ]
-        }
-      };
-      clientChannel.sendCommand(presenceCommand);
-    }
+    var presenceCommand = {
+      id: utils.newGuid(),
+      method: Lime.CommandMethod.set,
+      uri: "/receipt",
+      type: "application/vnd.lime.receipt+json",
+      resource: {
+        events: [ "accepted", "validated", "authorized", "dispatched", "received", "consumed" ]
+      }
+    };
+    clientChannel.sendCommand(presenceCommand);
   };
 
   window.sendMessage = function() {
-    if(isSessionEstablished()) {
-      var message = {
-        id: utils.newGuid(),
-        to: messageToInput.value,
-        type: "text/plain",
-        content: messageContentInput.value
-      };
-      clientChannel.sendMessage(message);
-    }
+    var message = {
+      id: utils.newGuid(),
+      to: messageToInput.value,
+      type: "text/plain",
+      content: messageContentInput.value
+    };
+    clientChannel.sendMessage(message);
   };
 
 })(this);

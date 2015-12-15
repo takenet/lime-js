@@ -279,15 +279,7 @@ var Lime;
             clientChannel.onSessionNegotiating = function (s) {
                 try {
                     if (s.encryptionOptions != null || s.compressionOptions != null) {
-                        var sessionCompression = compression;
-                        if (sessionCompression === null) {
-                            sessionCompression = s.compressionOptions[0];
-                        }
-                        var sessionEncryption = encryption;
-                        if (sessionEncryption === null) {
-                            sessionEncryption = s.encryptionOptions[0];
-                        }
-                        clientChannel.negotiateSession(sessionCompression, sessionEncryption);
+                        clientChannel.negotiateSession(compression || s.compressionOptions[0], encryption || s.encryptionOptions[0]);
                     }
                     else {
                         if (s.compression !== clientChannel.transport.compression) {
@@ -298,22 +290,19 @@ var Lime;
                         }
                     }
                 }
-                catch (e1) {
-                    _this.onFailure(clientChannel, listener, e1);
+                catch (e) {
+                    _this.onFailure(clientChannel, listener, e);
                 }
             };
             clientChannel.onSessionAuthenticating = function (s) {
                 try {
                     clientChannel.authenticateSession(identity, authentication, instance);
                 }
-                catch (e2) {
-                    _this.onFailure(clientChannel, listener, e2);
+                catch (e) {
+                    _this.onFailure(clientChannel, listener, e);
                 }
             };
-            clientChannel.onSessionEstablished = function (s) {
-                _this.onResult(clientChannel, listener, s);
-            };
-            clientChannel.onSessionFailed = function (s) {
+            clientChannel.onSessionEstablished = clientChannel.onSessionFailed = function (s) {
                 _this.onResult(clientChannel, listener, s);
             };
             try {

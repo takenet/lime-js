@@ -2,12 +2,16 @@ namespace Lime {
 
   export interface ISession extends IEnvelope {
     state: string;
+
     encryptionOptions?: string[];
     encryption?: string;
+
     compressionOptions?: string[];
     compression?: string;
+
     scheme?: string;
     authentication?: any;
+
     reason?: IReason;
   }
 

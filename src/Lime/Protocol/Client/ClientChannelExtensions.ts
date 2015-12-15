@@ -2,62 +2,46 @@ namespace Lime {
 
   export class ClientChannelExtensions {
 
-    static establishSession(clientChannel: IClientChannel, compression: string, encryption: string, identity: string, authentication: any, instance: string, listener: IEstablishSessionListener): void {
+    static establishSession(clientChannel: IClientChannel, compression: string, encryption: string, identity: string, authentication: IAuthentication, instance: string, listener: IEstablishSessionListener): void {
       if (clientChannel.state !== SessionState.new) {
         throw `Cannot establish a session in the '${clientChannel.state}' state.`;
       }
 
-      clientChannel.onSessionNegotiating = s => {
+      clientChannel.onSessionNegotiating = (s) => {
         try {
-
+          // Has encryption or compression options? ==> negotiate session with parameter or options
           if (s.encryptionOptions != null || s.compressionOptions != null) {
-            let sessionCompression = compression;
-            if (sessionCompression === null) {
-              sessionCompression = s.compressionOptions[0];
-            }
-
-            let sessionEncryption = encryption;
-            if (sessionEncryption === null) {
-              sessionEncryption = s.encryptionOptions[0];
-            }
-
-            clientChannel.negotiateSession(sessionCompression, sessionEncryption);
-
+            clientChannel.negotiateSession(compression || s.compressionOptions[0], encryption || s.encryptionOptions[0]);
           } else {
             // Apply transport options
             if (s.compression !== clientChannel.transport.compression) {
               clientChannel.transport.setCompression(s.compression);
             }
-
             if (s.encryption !== clientChannel.transport.encryption) {
               clientChannel.transport.setEncryption(s.encryption);
             }
           }
-        } catch (e1) {
-          this.onFailure(clientChannel, listener, e1);
+        } catch (e) {
+          this.onFailure(clientChannel, listener, e);
         }
       }
 
-      clientChannel.onSessionAuthenticating = s => {
-          try {
-              clientChannel.authenticateSession(identity, authentication, instance);
-          } catch (e2) {
-              this.onFailure(clientChannel, listener, e2);
-          }
+      clientChannel.onSessionAuthenticating = (s) => {
+        try {
+          clientChannel.authenticateSession(identity, authentication, instance);
+        } catch (e) {
+          this.onFailure(clientChannel, listener, e);
+        }
       }
 
-      clientChannel.onSessionEstablished = s => {
-          this.onResult(clientChannel, listener, s);
-      }
-
-      clientChannel.onSessionFailed = s => {
-          this.onResult(clientChannel, listener, s);
+      clientChannel.onSessionEstablished = clientChannel.onSessionFailed = (s) => {
+        this.onResult(clientChannel, listener, s);
       }
 
       try {
-          clientChannel.startNewSession();
+        clientChannel.startNewSession();
       } catch (e) {
-          this.onFailure(clientChannel, listener, e);
+        this.onFailure(clientChannel, listener, e);
       }
     }
 
