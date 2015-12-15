@@ -45,10 +45,10 @@ class MyTransport implements ITransport {
 }
 
 /// USAGE ...
-
-var channel = new MyChannel(new MyTransport());
-channel.connect(new GuestAuthentication()).then((x : ISession) => {
-  undefined;
+let session : ISession;
+let channel = new MyChannel(new MyTransport());
+channel.connect(new GuestAuthentication()).then((currentSession : ISession) => {
+  session = x;
 }).catch((x : any) => {
   undefined;
 });
