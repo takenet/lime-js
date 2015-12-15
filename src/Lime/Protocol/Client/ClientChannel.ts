@@ -54,6 +54,7 @@ namespace Lime {
             if (this.onSessionFinished != null) {
               this.onSessionFinished(s);
             }
+            break;
           case SessionState.failed:
             if (this.onSessionFailed != null) {
               this.onSessionFailed(s);
@@ -78,6 +79,7 @@ namespace Lime {
       if (this.state !== SessionState.negotiating) {
         throw `Cannot negotiate a session in the '${this.state}' state.`;
       }
+
       const session: ISession = {
         id: this.sessionId,
         state: SessionState.negotiating,
@@ -92,13 +94,11 @@ namespace Lime {
         throw `Cannot authenticate a session in the '${this.state}' state.`;
       }
 
-      let scheme: string = authentication.scheme || "unknown";
-
       const session: ISession = {
         id: this.sessionId,
         state: SessionState.authenticating,
         from: `${identity}/${instance}`,
-        scheme: scheme,
+        scheme: authentication.scheme || "unknown",
         authentication: authentication
       };
       this.sendSession(session);

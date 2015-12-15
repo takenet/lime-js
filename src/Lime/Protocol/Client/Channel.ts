@@ -8,20 +8,23 @@ namespace Lime {
       this.autoReplyPings = autoReplyPings;
       this.autoNotifyReceipt = autoNotifyReceipt;
       this.transport = transport;
-      this.transport.onEnvelope = e => {
+      this.state = SessionState.new;
+
+      this.transport.onEnvelope = (e) => {
         if (e.hasOwnProperty("event")) {
           this.onNotification(<INotification>e);
         } else if (e.hasOwnProperty("content")) {
           const message = <IMessage>e;
           if (this.autoNotifyReceipt &&
-              message.id &&
-              message.from) {
-              const notification: INotification = {
-                id: message.id,
-                to: message.from,
-                event: NotificationEvent.received
-              };
-              this.sendNotification(notification);
+            message.id &&
+            message.from)
+          {
+            const notification: INotification = {
+              id: message.id,
+              to: message.from,
+              event: NotificationEvent.received
+            };
+            this.sendNotification(notification);
           }
           this.onMessage(message);
         } else if (e.hasOwnProperty("method")) {
@@ -29,8 +32,9 @@ namespace Lime {
           if (this.autoReplyPings &&
             command.id &&
             command.from &&
-             command.uri === "/ping" &&
-            command.method === CommandMethod.get) {
+            command.uri === "/ping" &&
+            command.method === CommandMethod.get)
+          {
             const pingCommandResponse: ICommand = {
               id: command.id,
               to: command.from,
@@ -46,7 +50,6 @@ namespace Lime {
           this.onSession(<ISession>e);
         }
       };
-      this.state = SessionState.new;
     }
 
     sendMessage(message: IMessage) {
@@ -65,7 +68,7 @@ namespace Lime {
     }
     onCommand(command: ICommand) { }
 
-    sendNotification(notification:INotification) {
+    sendNotification(notification: INotification) {
       if (this.state !== SessionState.established) {
         throw new Error(`Cannot send in the '${this.state}' state`);
       }

@@ -15,7 +15,7 @@ namespace Lime {
         envelopeString);
 
       if (this.traceEnabled) {
-        console.debug(`SEND: ${envelopeString}`);
+        console.debug(`WebSocket SEND: ${envelopeString}`);
       }
     }
 
@@ -34,7 +34,7 @@ namespace Lime {
 
       this.webSocket.onmessage = e => {
         if (this.traceEnabled) {
-          console.debug(`RECEIVE: ${e.data}`);
+          console.debug(`WebSocket RECEIVE: ${e.data}`);
         }
 
         const object = JSON.parse(e.data);

@@ -40,15 +40,16 @@
       }
 
       clientChannel = new Lime.ClientChannel(transport, true, true);
-      Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, {
-        onResult: function(s) {
-          utils.logMessage("Session id: " + s.id + " - State: " + s.state);
-          if (s.state === Lime.SessionState.established) {
-            connectButton.disabled = true;
-            disconnectButton.disabled = false;
-          }
-        },
-        onFailure: function(e) { utils.logMessage("An error occurred: " + e); }
+      Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function(err, s) {
+        if(err) {
+          return utils.logMessage("An error occurred: " + e);
+        }
+
+        utils.logMessage("Session id: " + s.id + " - State: " + s.state);
+        if (s.state === Lime.SessionState.established) {
+          connectButton.disabled = true;
+          disconnectButton.disabled = false;
+        }
       });
 
       clientChannel.onMessage = function(m) {

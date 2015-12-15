@@ -75,6 +75,7 @@ var Lime;
             this.autoReplyPings = autoReplyPings;
             this.autoNotifyReceipt = autoNotifyReceipt;
             this.transport = transport;
+            this.state = Lime.SessionState.new;
             this.transport.onEnvelope = function (e) {
                 if (e.hasOwnProperty("event")) {
                     _this.onNotification(e);
@@ -117,7 +118,6 @@ var Lime;
                     _this.onSession(e);
                 }
             };
-            this.state = Lime.SessionState.new;
         }
         Channel.prototype.sendMessage = function (message) {
             if (this.state !== Lime.SessionState.established) {
@@ -204,6 +204,7 @@ var Lime;
                         if (_this.onSessionFinished != null) {
                             _this.onSessionFinished(s);
                         }
+                        break;
                     case Lime.SessionState.failed:
                         if (_this.onSessionFailed != null) {
                             _this.onSessionFailed(s);
@@ -237,12 +238,11 @@ var Lime;
             if (this.state !== Lime.SessionState.authenticating) {
                 throw "Cannot authenticate a session in the '" + this.state + "' state.";
             }
-            var scheme = authentication.scheme || "unknown";
             var session = {
                 id: this.sessionId,
                 state: Lime.SessionState.authenticating,
                 from: identity + "/" + instance,
-                scheme: scheme,
+                scheme: authentication.scheme || "unknown",
                 authentication: authentication
             };
             this.sendSession(session);
@@ -271,7 +271,7 @@ var Lime;
     var ClientChannelExtensions = (function () {
         function ClientChannelExtensions() {
         }
-        ClientChannelExtensions.establishSession = function (clientChannel, compression, encryption, identity, authentication, instance, listener) {
+        ClientChannelExtensions.establishSession = function (clientChannel, compression, encryption, identity, authentication, instance, callback) {
             var _this = this;
             if (clientChannel.state !== Lime.SessionState.new) {
                 throw "Cannot establish a session in the '" + clientChannel.state + "' state.";
@@ -290,35 +290,31 @@ var Lime;
                         }
                     }
                 }
-                catch (e) {
-                    _this.onFailure(clientChannel, listener, e);
+                catch (err) {
+                    _this.removeListeners(clientChannel);
+                    callback(err, null);
                 }
             };
             clientChannel.onSessionAuthenticating = function (s) {
                 try {
                     clientChannel.authenticateSession(identity, authentication, instance);
                 }
-                catch (e) {
-                    _this.onFailure(clientChannel, listener, e);
+                catch (err) {
+                    _this.removeListeners(clientChannel);
+                    callback(err, null);
                 }
             };
             clientChannel.onSessionEstablished = clientChannel.onSessionFailed = function (s) {
-                _this.onResult(clientChannel, listener, s);
+                _this.removeListeners(clientChannel);
+                callback(null, s);
             };
             try {
                 clientChannel.startNewSession();
             }
-            catch (e) {
-                this.onFailure(clientChannel, listener, e);
+            catch (err) {
+                this.removeListeners(clientChannel);
+                callback(err, null);
             }
-        };
-        ClientChannelExtensions.onResult = function (clientChannel, listener, session) {
-            this.removeListeners(clientChannel);
-            listener.onResult(session);
-        };
-        ClientChannelExtensions.onFailure = function (clientChannel, listener, exception) {
-            this.removeListeners(clientChannel);
-            listener.onFailure(exception);
         };
         ClientChannelExtensions.removeListeners = function (clientChannel) {
             clientChannel.onSessionNegotiating = null;
@@ -342,7 +338,7 @@ var Lime;
             var envelopeString = JSON.stringify(envelope);
             this.webSocket.send(envelopeString);
             if (this.traceEnabled) {
-                console.debug("SEND: " + envelopeString);
+                console.debug("WebSocket SEND: " + envelopeString);
             }
         };
         WebSocketTransport.prototype.onEnvelope = function (envelope) { };
@@ -358,7 +354,7 @@ var Lime;
             this.compression = Lime.SessionCompression.none;
             this.webSocket.onmessage = function (e) {
                 if (_this.traceEnabled) {
-                    console.debug("RECEIVE: " + e.data);
+                    console.debug("WebSocket RECEIVE: " + e.data);
                 }
                 var object = JSON.parse(e.data);
                 var envelope;
