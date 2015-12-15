@@ -2,7 +2,7 @@ namespace Lime {
 
   export class ClientChannelExtensions {
 
-    static establishSession(clientChannel: IClientChannel, compression: string, encryption: string, identity: string, authentication: IAuthentication, instance: string, listener: IEstablishSessionListener): void {
+    static establishSession(clientChannel: IClientChannel, compression: string, encryption: string, identity: string, authentication: IAuthentication, instance: string, callback: IEstablishSessionListener): void {
       if (clientChannel.state !== SessionState.new) {
         throw `Cannot establish a session in the '${clientChannel.state}' state.`;
       }
@@ -21,38 +21,32 @@ namespace Lime {
               clientChannel.transport.setEncryption(s.encryption);
             }
           }
-        } catch (e) {
-          this.onFailure(clientChannel, listener, e);
+        } catch (err) {
+          this.removeListeners(clientChannel);
+          callback(err, null);
         }
       }
 
       clientChannel.onSessionAuthenticating = (s) => {
         try {
           clientChannel.authenticateSession(identity, authentication, instance);
-        } catch (e) {
-          this.onFailure(clientChannel, listener, e);
+        } catch (err) {
+          this.removeListeners(clientChannel);
+          callback(err, null);
         }
       }
 
       clientChannel.onSessionEstablished = clientChannel.onSessionFailed = (s) => {
-        this.onResult(clientChannel, listener, s);
-      }
+        this.removeListeners(clientChannel);
+        callback(null, s);
+      };
 
       try {
         clientChannel.startNewSession();
-      } catch (e) {
-        this.onFailure(clientChannel, listener, e);
+      } catch (err) {
+        this.removeListeners(clientChannel);
+        callback(err, null);
       }
-    }
-
-    private static onResult(clientChannel: IClientChannel, listener: IEstablishSessionListener, session: ISession): void {
-      this.removeListeners(clientChannel);
-      listener.onResult(session);
-    }
-
-    private static onFailure(clientChannel: IClientChannel, listener: IEstablishSessionListener, exception: string): void {
-      this.removeListeners(clientChannel);
-      listener.onFailure(exception);
     }
 
     private static removeListeners(clientChannel: IClientChannel): void {

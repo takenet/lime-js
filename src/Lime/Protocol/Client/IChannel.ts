@@ -32,8 +32,8 @@ namespace Lime {
   export interface ISessionListener {
     (session: ISession): void;
   }
+
   export interface IEstablishSessionListener {
-    onResult: ISessionListener;
-    onFailure: (exception: string) => void;
+    (error: Error, session: ISession): void;
   }
 }
