@@ -15,7 +15,6 @@ transport.onOpen = () => {
       onFailure (e) {  }
     });
 
-
     clientChannel.onMessage = (IMessage m) => {}
     clientChannel.onNotification = (INotification n) => {}
     clientChannel.onCommand = (ICommand c) => {}
@@ -30,12 +29,9 @@ transport.open('ws://oi');
 // -------------------
 
 
-
-var ajaxTransport = new XhrTransport('http://tial');
-
 let transport = new WebSocketTransport('ws://oi');
 var channel = new ClientChannel(transport);
-channel.connectWithPlain(identity, instance)
+channel.connectWithPlainAuthentication(identity, instance)
   .then((s) => {
     console.assert(s.state === Lime.SessionState.established)
   })

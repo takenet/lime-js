@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "out": "lime.js",
+        "out": "dist/lime.js",
         "target": "es5",
         "sourceMap": true,
         "rootDir": "src",
@@ -13,7 +13,7 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true
     },
-    "compileOnSave": false,
+    "compileOnSave": true,
     "buildOnSave": false,
     "exclude": [
         "node_modules"
