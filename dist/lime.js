@@ -380,19 +380,19 @@ var Lime;
                 _this.onEnvelope(envelope);
             };
             this.webSocket.onopen = function (e) {
-                if (_this.stateListener != null) {
-                    _this.stateListener.onOpen();
+                if (_this.onOpen != null) {
+                    _this.onOpen();
                 }
             };
             this.webSocket.onclose = function (e) {
-                if (_this.stateListener != null) {
-                    _this.stateListener.onClosed();
+                if (_this.onClose != null) {
+                    _this.onClose();
                 }
                 _this.webSocket = null;
             };
             this.webSocket.onerror = function (e) {
-                if (_this.stateListener != null) {
-                    _this.stateListener.onError(e.toString());
+                if (_this.onError != null) {
+                    _this.onError(e.toString());
                 }
                 _this.webSocket = null;
                 console.log(e);
@@ -408,10 +408,13 @@ var Lime;
                 throw "The connection is not open";
             }
         };
-        WebSocketTransport.prototype.getSupportedCompression = function () { throw new Error("Encryption change is not supported"); };
+        WebSocketTransport.prototype.getSupportedCompression = function () { throw new Error("Compression change is not supported"); };
         WebSocketTransport.prototype.setCompression = function (compression) { };
         WebSocketTransport.prototype.getSupportedEncryption = function () { throw new Error("Encryption change is not supported"); };
         WebSocketTransport.prototype.setEncryption = function (encryption) { };
+        WebSocketTransport.prototype.onOpen = function () { };
+        WebSocketTransport.prototype.onClose = function () { };
+        WebSocketTransport.prototype.onError = function (error) { };
         return WebSocketTransport;
     })();
     Lime.WebSocketTransport = WebSocketTransport;

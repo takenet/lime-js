@@ -1,5 +1,5 @@
 namespace Lime {
-  
+
   export class WebSocketTransport implements ITransport {
     private traceEnabled: boolean;
     webSocket: WebSocket;
@@ -53,20 +53,20 @@ namespace Lime {
         this.onEnvelope(envelope);
       }
 
-      this.webSocket.onopen = e => {
-        if (this.stateListener != null) {
-          this.stateListener.onOpen();
+      this.webSocket.onopen = (e) => {
+        if (this.onOpen != null) {
+          this.onOpen();
         }
       }
-      this.webSocket.onclose = e => {
-        if (this.stateListener != null) {
-          this.stateListener.onClosed();
+      this.webSocket.onclose = (e) => {
+        if (this.onClose != null) {
+          this.onClose();
         }
         this.webSocket = null;
       }
-      this.webSocket.onerror = e => {
-        if (this.stateListener != null) {
-          this.stateListener.onError(e.toString());
+      this.webSocket.onerror = (e) => {
+        if (this.onError != null) {
+          this.onError(e.toString());
         }
         this.webSocket = null;
         console.log(e);
@@ -78,8 +78,6 @@ namespace Lime {
       this.webSocket.close();
     }
 
-    stateListener: ITransportStateListener;
-
     private ensureSocketOpen() {
       if(this.webSocket == null ||
         this.webSocket.readyState !== WebSocket.OPEN) {
@@ -87,12 +85,16 @@ namespace Lime {
       }
     }
 
-    getSupportedCompression(): string[] { throw new Error("Encryption change is not supported"); }
+    getSupportedCompression(): string[] { throw new Error("Compression change is not supported"); }
     setCompression(compression: string): void {}
     compression: string;
 
     getSupportedEncryption(): string[] { throw new Error("Encryption change is not supported"); }
     setEncryption(encryption: string): void {}
     encryption: string;
+
+    onOpen(): void {}
+    onClose(): void {}
+    onError(error: string) {}
   }
 }

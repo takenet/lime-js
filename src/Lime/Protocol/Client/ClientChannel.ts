@@ -13,10 +13,13 @@ namespace Lime {
     onSessionFailed: ISessionListener;
   }
 
+
   export class ClientChannel extends Channel implements IClientChannel {
+
     constructor(transport: ITransport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {
       super(transport, autoReplyPings, autoNotifyReceipt);
-      super.onSession = s => {
+
+      super.onSession = (s) => {
         this.sessionId = s.id;
         this.state = s.state;
 

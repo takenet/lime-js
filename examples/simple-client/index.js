@@ -30,48 +30,46 @@
    */
   function establishSession(uri, identity, instance, password) {
     var transport = new Lime.WebSocketTransport(true);
-    transport.stateListener = {
-      onOpen: function() {
-        var authentication;
-        if (password) {
-          authentication = new Lime.PlainAuthentication();
-          authentication.password = btoa(password);
-        } else {
-          authentication = new Lime.GuestAuthentication();
-        }
-
-        clientChannel = new Lime.ClientChannel(transport, true, true);
-        Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, {
-          onResult: function(s) {
-            utils.logMessage("Session id: " + s.id + " - State: " + s.state);
-            if (s.state === Lime.SessionState.established) {
-              connectButton.disabled = true;
-              disconnectButton.disabled = false;
-            }
-          },
-          onFailure: function(e) { utils.logMessage("An error occurred: " + e); }
-        });
-
-        clientChannel.onMessage = function(m) {
-          utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
-        };
-
-        clientChannel.onNotification = function(n) {
-          utils.logMessage("Notification received - From: " + n.from + " - To: " + n.to + " - Event: " + n.event + " - Reason: " + n.reason);
-        };
-
-        clientChannel.onCommand = function(c) {
-          utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
-        };
-      },
-      onClosed: function() {
-        connectButton.disabled = false;
-        disconnectButton.disabled = true;
-        utils.logMessage("Transport is closed");
-      },
-      onError: function(s) {
-        utils.logMessage("Transport failed: " + s);
+    transport.onOpen = function() {
+      var authentication;
+      if (password) {
+        authentication = new Lime.PlainAuthentication();
+        authentication.password = btoa(password);
+      } else {
+        authentication = new Lime.GuestAuthentication();
       }
+
+      clientChannel = new Lime.ClientChannel(transport, true, true);
+      Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, {
+        onResult: function(s) {
+          utils.logMessage("Session id: " + s.id + " - State: " + s.state);
+          if (s.state === Lime.SessionState.established) {
+            connectButton.disabled = true;
+            disconnectButton.disabled = false;
+          }
+        },
+        onFailure: function(e) { utils.logMessage("An error occurred: " + e); }
+      });
+
+      clientChannel.onMessage = function(m) {
+        utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
+      };
+
+      clientChannel.onNotification = function(n) {
+        utils.logMessage("Notification received - From: " + n.from + " - To: " + n.to + " - Event: " + n.event + " - Reason: " + n.reason);
+      };
+
+      clientChannel.onCommand = function(c) {
+        utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
+      };
+    };
+    transport.onClose = function() {
+      connectButton.disabled = false;
+      disconnectButton.disabled = true;
+      utils.logMessage("Transport is closed");
+    };
+    transport.onError = function(err) {
+      utils.logMessage("Transport failed: " + err);
     };
 
     transport.open(uri);

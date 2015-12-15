@@ -1,12 +1,11 @@
 namespace Lime {
 
-  export interface ITransport {
+  export interface ITransport extends ITransportStateListener {
     send(envelope: IEnvelope): void;
     onEnvelope: (envelope: IEnvelope) => any;
 
     open(uri: string): void;
     close(): void;
-    stateListener: ITransportStateListener;
 
     getSupportedCompression(): string[];
     setCompression(compression: string): void;
@@ -23,7 +22,7 @@ namespace Lime {
 
   export interface ITransportStateListener {
     onOpen: () => void;
-    onClosed: () => void;
-    onError: (exception: string) => void;
+    onClose: () => void;
+    onError: (error: string) => void;
   }
 }
