@@ -1,5 +1,5 @@
 {
-  "name": "lime",
+  "name": "lime-js",
   "version": "0.0.2",
   "description": "JavaScript LIME implementation",
   "main": "lime.js",
