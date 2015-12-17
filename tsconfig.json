@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "out": "dist/lime.js",
+        "out": "lime.js",
         "target": "es5",
         "sourceMap": true,
         "rootDir": "src",
