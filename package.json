@@ -4,7 +4,7 @@
   "description": "JavaScript LIME implementation",
   "main": "dist/lime.js",
   "scripts": {
-    "build": "./node_modules/.bin/tsc --out hub.js"
+    "build": "./node_modules/.bin/tsc --out lime.js"
   },
   "repository": {
     "type": "git",

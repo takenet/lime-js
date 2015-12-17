@@ -91,3 +91,5 @@ node_modules
 tmp/
 .DS_STORE
 **/.DS_STORE
+
+lime.*
