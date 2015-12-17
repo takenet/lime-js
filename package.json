@@ -2,7 +2,7 @@
   "name": "lime",
   "version": "0.0.1",
   "description": "JavaScript LIME implementation",
-  "main": "dist/lime.js",
+  "main": "lime.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc --out lime.js"
   },
