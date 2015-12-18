@@ -30,6 +30,18 @@
    */
   function establishSession(uri, identity, instance, password) {
     var transport = new Lime.WebSocketTransport(true);
+    var clientChannel = new Lime.ClientChannel(transport, true, true);
+
+    clientChannel.onMessage = function(m) {
+      utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
+    };
+    clientChannel.onNotification = function(n) {
+      utils.logMessage("Notification received - From: " + n.from + " - To: " + n.to + " - Event: " + n.event + " - Reason: " + n.reason);
+    };
+    clientChannel.onCommand = function(c) {
+      utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
+    };
+
     transport.onOpen = function() {
       var authentication;
       if (password) {
@@ -39,7 +51,6 @@
         authentication = new Lime.GuestAuthentication();
       }
 
-      clientChannel = new Lime.ClientChannel(transport, true, true);
       Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function(err, s) {
         if(err) {
           return utils.logMessage("An error occurred: " + e);
@@ -51,18 +62,6 @@
           disconnectButton.disabled = false;
         }
       });
-
-      clientChannel.onMessage = function(m) {
-        utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
-      };
-
-      clientChannel.onNotification = function(n) {
-        utils.logMessage("Notification received - From: " + n.from + " - To: " + n.to + " - Event: " + n.event + " - Reason: " + n.reason);
-      };
-
-      clientChannel.onCommand = function(c) {
-        utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
-      };
     };
     transport.onClose = function() {
       connectButton.disabled = false;
@@ -70,7 +69,7 @@
       utils.logMessage("Transport is closed");
     };
     transport.onError = function(err) {
-      utils.logMessage("Transport failed: " + err);
+      utils.logMessage("Transport failed: " + err.message);
     };
 
     transport.open(uri);

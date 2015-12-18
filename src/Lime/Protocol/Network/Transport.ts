@@ -23,6 +23,6 @@ namespace Lime {
   export interface ITransportStateListener {
     onOpen: () => void;
     onClose: () => void;
-    onError: (error: string) => void;
+    onError: (error: Error) => void;
   }
 }

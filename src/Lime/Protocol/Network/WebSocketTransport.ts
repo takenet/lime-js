@@ -11,8 +11,7 @@ namespace Lime {
     send(envelope: Envelope) {
       this.ensureSocketOpen();
       const envelopeString = JSON.stringify(envelope);
-      this.webSocket.send(
-        envelopeString);
+      this.webSocket.send(envelopeString);
 
       if (this.traceEnabled) {
         console.debug(`WebSocket SEND: ${envelopeString}`);
@@ -36,40 +35,13 @@ namespace Lime {
         if (this.traceEnabled) {
           console.debug(`WebSocket RECEIVE: ${e.data}`);
         }
-
-        const object = JSON.parse(e.data);
-        let envelope: Envelope;
-        if (object.hasOwnProperty("event")) {
-          envelope = <Notification>object;
-        } else if (object.hasOwnProperty("content")) {
-          envelope = <Message>object;
-        } else if (object.hasOwnProperty("method")) {
-          envelope = <Command>object;
-        } else if (object.hasOwnProperty("state")) {
-          envelope = <Session>object;
-        } else {
-          return;
-        }
-        this.onEnvelope(envelope);
+        this.onEnvelope(<Envelope>JSON.parse(e.data));
       }
 
-      this.webSocket.onopen = (e) => {
-        if (this.onOpen != null) {
-          this.onOpen();
-        }
-      }
-      this.webSocket.onclose = (e) => {
-        if (this.onClose != null) {
-          this.onClose();
-        }
-        this.webSocket = null;
-      }
+      this.webSocket.onopen = this.onOpen;
+      this.webSocket.onclose = this.onClose;
       this.webSocket.onerror = (e) => {
-        if (this.onError != null) {
-          this.onError(e.toString());
-        }
-        this.webSocket = null;
-        console.log(e);
+        this.onError(new Error(e.toString()));
       }
     }
 
@@ -95,6 +67,6 @@ namespace Lime {
 
     onOpen(): void {}
     onClose(): void {}
-    onError(error: string) {}
+    onError(error: Error) {}
   }
 }

@@ -22,29 +22,19 @@ namespace Lime {
 
         switch (s.state) {
           case SessionState.negotiating:
-            if (this.onSessionNegotiating != null) {
-              this.onSessionNegotiating(s);
-            }
+            this.onSessionNegotiating(s);
             break;
           case SessionState.authenticating:
-            if (this.onSessionAuthenticating != null) {
-              this.onSessionAuthenticating(s);
-            }
+            this.onSessionAuthenticating(s);
             break;
           case SessionState.established:
-            if (this.onSessionEstablished != null) {
-              this.onSessionEstablished(s);
-            }
+            this.onSessionEstablished(s);
             break;
           case SessionState.finished:
-            if (this.onSessionFinished != null) {
-              this.onSessionFinished(s);
-            }
+            this.onSessionFinished(s);
             break;
           case SessionState.failed:
-            if (this.onSessionFailed != null) {
-              this.onSessionFailed(s);
-            }
+            this.onSessionFailed(s);
           default:
         }
       }

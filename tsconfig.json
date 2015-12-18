@@ -6,7 +6,7 @@
         "rootDir": "./src",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declaration": true,
+        "declaration": false,
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
