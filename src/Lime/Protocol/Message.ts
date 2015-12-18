@@ -1,6 +1,6 @@
 namespace Lime {
 
-  export interface IMessage extends IEnvelope {
+  export interface Message extends Envelope {
     type: string;
     content: any;
   }

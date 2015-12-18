@@ -1,22 +1,8 @@
 namespace Lime {
 
-  export interface IClientChannel extends IChannel {
-    startNewSession(): void;
-    negotiateSession(sessionCompression: string, sessionEncryption: string): void;
-    authenticateSession(identity: string, authentication: IAuthentication, instance: string): void;
-    sendFinishingSession(): void;
+  export class ClientChannel extends Channel {
 
-    onSessionNegotiating: ISessionListener;
-    onSessionAuthenticating: ISessionListener;
-    onSessionEstablished: ISessionListener;
-    onSessionFinished: ISessionListener;
-    onSessionFailed: ISessionListener;
-  }
-
-
-  export class ClientChannel extends Channel implements IClientChannel {
-
-    constructor(transport: ITransport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {
+    constructor(transport: Transport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {
       super(transport, autoReplyPings, autoNotifyReceipt);
 
       super.onSession = (s) => {
@@ -69,7 +55,7 @@ namespace Lime {
         throw `Cannot start a session in the '${this.state}' state.`;
       }
 
-      const session: ISession = {
+      const session: Session = {
         state: SessionState.new
       };
       this.sendSession(session);
@@ -80,7 +66,7 @@ namespace Lime {
         throw `Cannot negotiate a session in the '${this.state}' state.`;
       }
 
-      const session: ISession = {
+      const session: Session = {
         id: this.sessionId,
         state: SessionState.negotiating,
         compression: sessionCompression,
@@ -89,12 +75,12 @@ namespace Lime {
       this.sendSession(session);
     }
 
-    authenticateSession(identity: string, authentication: IAuthentication, instance: string) {
+    authenticateSession(identity: string, authentication: Authentication, instance: string) {
       if (this.state !== SessionState.authenticating) {
         throw `Cannot authenticate a session in the '${this.state}' state.`;
       }
 
-      const session: ISession = {
+      const session: Session = {
         id: this.sessionId,
         state: SessionState.authenticating,
         from: `${identity}/${instance}`,
@@ -109,17 +95,17 @@ namespace Lime {
         throw `Cannot finish a session in the '${this.state}' state.`;
       }
 
-      const session: ISession = {
+      const session: Session = {
         id: this.sessionId,
         state: SessionState.finishing
       };
       this.sendSession(session);
     }
 
-    onSessionNegotiating(session: ISession) {}
-    onSessionAuthenticating(session: ISession) {}
-    onSessionEstablished(session: ISession) {}
-    onSessionFinished(session: ISession) {}
-    onSessionFailed(session: ISession) {}
+    onSessionNegotiating(session: Session) {}
+    onSessionAuthenticating(session: Session) {}
+    onSessionEstablished(session: Session) {}
+    onSessionFinished(session: Session) {}
+    onSessionFailed(session: Session) {}
   }
 }

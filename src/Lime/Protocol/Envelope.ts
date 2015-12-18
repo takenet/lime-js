@@ -1,6 +1,6 @@
 namespace Lime {
 
-  export interface IEnvelope {
+  export interface Envelope {
     id?: string;
     from?: string;
     to?: string;
@@ -8,7 +8,7 @@ namespace Lime {
     metadata?: any;
   }
 
-  export interface IReason {
+  export interface Reason {
     code: number;
     description?: string;
   }

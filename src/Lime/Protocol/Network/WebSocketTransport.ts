@@ -1,6 +1,6 @@
 namespace Lime {
 
-  export class WebSocketTransport implements ITransport {
+  export class WebSocketTransport implements Transport {
     private traceEnabled: boolean;
     webSocket: WebSocket;
 
@@ -8,7 +8,7 @@ namespace Lime {
       this.traceEnabled = traceEnabled;
     }
 
-    send(envelope: IEnvelope) {
+    send(envelope: Envelope) {
       this.ensureSocketOpen();
       const envelopeString = JSON.stringify(envelope);
       this.webSocket.send(
@@ -19,7 +19,7 @@ namespace Lime {
       }
     }
 
-    onEnvelope(envelope: IEnvelope) { }
+    onEnvelope(envelope: Envelope) { }
 
     open(uri: string) {
       this.webSocket = new WebSocket(uri, "lime");
@@ -32,21 +32,21 @@ namespace Lime {
 
       this.compression = SessionCompression.none;
 
-      this.webSocket.onmessage = e => {
+      this.webSocket.onmessage = (e) => {
         if (this.traceEnabled) {
           console.debug(`WebSocket RECEIVE: ${e.data}`);
         }
 
         const object = JSON.parse(e.data);
-        let envelope: IEnvelope;
+        let envelope: Envelope;
         if (object.hasOwnProperty("event")) {
-          envelope = <INotification>object;
+          envelope = <Notification>object;
         } else if (object.hasOwnProperty("content")) {
-          envelope = <IMessage>object;
+          envelope = <Message>object;
         } else if (object.hasOwnProperty("method")) {
-          envelope = <ICommand>object;
+          envelope = <Command>object;
         } else if (object.hasOwnProperty("state")) {
-          envelope = <ISession>object;
+          envelope = <Session>object;
         } else {
           return;
         }

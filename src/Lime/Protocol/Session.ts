@@ -1,6 +1,6 @@
 namespace Lime {
 
-  export interface ISession extends IEnvelope {
+  export interface Session extends Envelope {
     state: string;
 
     encryptionOptions?: string[];
@@ -12,7 +12,7 @@ namespace Lime {
     scheme?: string;
     authentication?: any;
 
-    reason?: IReason;
+    reason?: Reason;
   }
 
   export class SessionState {

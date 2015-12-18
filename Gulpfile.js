@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var ts = require('gulp-typescript');
 
-var tsProject = ts.createProject('src/tsconfig.json');
+var tsProject = ts.createProject('tsconfig.json');
 
 var paths = {
   src: 'src/**/*.ts',
