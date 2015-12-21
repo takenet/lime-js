@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/takenet/lime-js.svg)](https://travis-ci.org/takenet/lime-js)
+
 # lime-js
 > Javascript LIME implementation
 
