@@ -1,10 +1,11 @@
 {
   "name": "lime-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JavaScript LIME implementation",
   "main": "lime.js",
   "scripts": {
-    "build": "./node_modules/.bin/tsc --out lime.js"
+    "build": "./node_modules/.bin/webpack",
+    "watch": "./node_modules/.bin/webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -25,8 +26,8 @@
   },
   "homepage": "https://github.com/takenet/lime-js#readme",
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-typescript": "^2.10.0"
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.7.5",
+    "webpack": "^1.12.9"
   }
 }

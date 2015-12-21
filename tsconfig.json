@@ -1,23 +1,15 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
         "out": "lime.js",
         "target": "es5",
-        "sourceMap": true,
         "rootDir": "./src",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": false,
         "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "declaration": true,
+        "sourceMap": true
     },
-    "compileOnSave": true,
-    "buildOnSave": true,
     "exclude": [
-        "node_modules",
-        "lime.d.ts"
+        "node_modules"
     ],
     "atom": {
         "rewriteTsconfig": false

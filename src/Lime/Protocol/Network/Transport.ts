@@ -1,28 +1,27 @@
-namespace Lime {
+import {Envelope} from "../Envelope";
 
-  export interface Transport extends ITransportStateListener {
-    send(envelope: Envelope): void;
-    onEnvelope: (envelope: Envelope) => any;
+export interface Transport extends ITransportStateListener {
+  send(envelope: Envelope): void;
+  onEnvelope: (envelope: Envelope) => any;
 
-    open(uri: string): void;
-    close(): void;
+  open(uri: string): void;
+  close(): void;
 
-    getSupportedCompression(): string[];
-    setCompression(compression: string): void;
-    compression: string;
+  getSupportedCompression(): string[];
+  setCompression(compression: string): void;
+  compression: string;
 
-    getSupportedEncryption(): string[];
-    setEncryption(encryption: string): void;
-    encryption: string;
-  }
+  getSupportedEncryption(): string[];
+  setEncryption(encryption: string): void;
+  encryption: string;
+}
 
-  export interface ITransportEnvelopeListener {
-    (envelope: Envelope): void;
-  }
+export interface ITransportEnvelopeListener {
+  (envelope: Envelope): void;
+}
 
-  export interface ITransportStateListener {
-    onOpen: () => void;
-    onClose: () => void;
-    onError: (error: Error) => void;
-  }
+export interface ITransportStateListener {
+  onOpen: () => void;
+  onClose: () => void;
+  onError: (error: Error) => void;
 }
