@@ -1,12 +1,12 @@
 namespace Lime {
 
-  export interface ICommand extends IEnvelope {
+  export interface Command extends Envelope {
     uri?: string;
     type?: string;
     resource?: any;
     method: string;
     status?: string;
-    reason?: IReason;
+    reason?: Reason;
   }
 
   export class CommandMethod {

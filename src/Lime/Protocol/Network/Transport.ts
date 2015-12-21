@@ -1,8 +1,8 @@
 namespace Lime {
 
-  export interface ITransport extends ITransportStateListener {
-    send(envelope: IEnvelope): void;
-    onEnvelope: (envelope: IEnvelope) => any;
+  export interface Transport extends ITransportStateListener {
+    send(envelope: Envelope): void;
+    onEnvelope: (envelope: Envelope) => any;
 
     open(uri: string): void;
     close(): void;
@@ -17,12 +17,12 @@ namespace Lime {
   }
 
   export interface ITransportEnvelopeListener {
-    (envelope: IEnvelope): void;
+    (envelope: Envelope): void;
   }
 
   export interface ITransportStateListener {
     onOpen: () => void;
     onClose: () => void;
-    onError: (error: string) => void;
+    onError: (error: Error) => void;
   }
 }

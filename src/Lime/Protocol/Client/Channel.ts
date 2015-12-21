@@ -1,10 +1,10 @@
 namespace Lime {
 
-  export class Channel implements IChannel {
+  export class Channel {
     private autoReplyPings: boolean;
     private autoNotifyReceipt: boolean;
 
-    constructor(transport: ITransport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
+    constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
       this.autoReplyPings = autoReplyPings;
       this.autoNotifyReceipt = autoNotifyReceipt;
       this.transport = transport;
@@ -12,14 +12,14 @@ namespace Lime {
 
       this.transport.onEnvelope = (e) => {
         if (e.hasOwnProperty("event")) {
-          this.onNotification(<INotification>e);
+          this.onNotification(<Notification>e);
         } else if (e.hasOwnProperty("content")) {
-          const message = <IMessage>e;
+          const message = <Message>e;
           if (this.autoNotifyReceipt &&
             message.id &&
             message.from)
           {
-            const notification: INotification = {
+            const notification: Notification = {
               id: message.id,
               to: message.from,
               event: NotificationEvent.received
@@ -28,14 +28,14 @@ namespace Lime {
           }
           this.onMessage(message);
         } else if (e.hasOwnProperty("method")) {
-          const command = <ICommand>e;
+          const command = <Command>e;
           if (this.autoReplyPings &&
             command.id &&
             command.from &&
             command.uri === "/ping" &&
             command.method === CommandMethod.get)
           {
-            const pingCommandResponse: ICommand = {
+            const pingCommandResponse: Command = {
               id: command.id,
               to: command.from,
               method: CommandMethod.get,
@@ -47,51 +47,51 @@ namespace Lime {
             this.onCommand(command);
           }
         } else if (e.hasOwnProperty("state")) {
-          this.onSession(<ISession>e);
+          this.onSession(<Session>e);
         }
       };
     }
 
-    sendMessage(message: IMessage) {
+    sendMessage(message: Message) {
       if (this.state !== SessionState.established) {
         throw new Error(`Cannot send in the '${this.state}' state`);
       }
       this.send(message);
     }
-    onMessage(message: IMessage) { }
+    onMessage(message: Message) { }
 
-    sendCommand(command: ICommand) {
+    sendCommand(command: Command) {
       if (this.state !== SessionState.established) {
         throw new Error(`Cannot send in the '${this.state}' state`);
       }
       this.send(command);
     }
-    onCommand(command: ICommand) { }
+    onCommand(command: Command) { }
 
-    sendNotification(notification: INotification) {
+    sendNotification(notification: Notification) {
       if (this.state !== SessionState.established) {
         throw new Error(`Cannot send in the '${this.state}' state`);
       }
       this.send(notification);
     }
-    onNotification(notification: INotification) { }
+    onNotification(notification: Notification) { }
 
-    sendSession(session: ISession) {
+    sendSession(session: Session) {
       if (this.state === SessionState.finished ||
         this.state === SessionState.failed) {
         throw new Error(`Cannot send in the '${this.state}' state`);
       }
       this.send(session);
     }
-    onSession(session: ISession) { }
+    onSession(session: Session) { }
 
-    transport: ITransport;
+    transport: Transport;
     remoteNode: string;
     localNode: string;
     sessionId: string;
     state: string;
 
-    private send(envelope: IEnvelope) {
+    private send(envelope: Envelope) {
       this.transport.send(envelope);
     }
   }

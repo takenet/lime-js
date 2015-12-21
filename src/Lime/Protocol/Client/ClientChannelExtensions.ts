@@ -2,7 +2,7 @@ namespace Lime {
 
   export class ClientChannelExtensions {
 
-    static establishSession(clientChannel: IClientChannel, compression: string, encryption: string, identity: string, authentication: IAuthentication, instance: string, callback: IEstablishSessionListener): void {
+    static establishSession(clientChannel: ClientChannel, compression: string, encryption: string, identity: string, authentication: Authentication, instance: string, callback: IEstablishSessionListener): void {
       if (clientChannel.state !== SessionState.new) {
         throw `Cannot establish a session in the '${clientChannel.state}' state.`;
       }
@@ -49,7 +49,7 @@ namespace Lime {
       }
     }
 
-    private static removeListeners(clientChannel: IClientChannel): void {
+    private static removeListeners(clientChannel: ClientChannel): void {
       clientChannel.onSessionNegotiating = null;
       clientChannel.onSessionAuthenticating = null;
       clientChannel.onSessionEstablished = null;

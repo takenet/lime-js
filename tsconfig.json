@@ -3,7 +3,7 @@
         "out": "lime.js",
         "target": "es5",
         "sourceMap": true,
-        "rootDir": "src",
+        "rootDir": "./src",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": false,
@@ -14,9 +14,10 @@
         "suppressImplicitAnyIndexErrors": true
     },
     "compileOnSave": true,
-    "buildOnSave": false,
+    "buildOnSave": true,
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "lime.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": false

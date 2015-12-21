@@ -1,39 +1,30 @@
 namespace Lime {
 
   export interface IMessageChannel {
-    sendMessage(message: IMessage): void;
-    onMessage: (message: IMessage) => void;
+    sendMessage(message: Message): void;
+    onMessage: (message: Message) => void;
   }
 
   export interface ICommandChannel {
-    sendCommand(command: ICommand): void;
-    onCommand: (command: ICommand) => void;
+    sendCommand(command: Command): void;
+    onCommand: (command: Command) => void;
   }
 
   export interface INotificationChannel {
-    sendNotification(notification: INotification): void;
-    onNotification: (notification: INotification) => void;
+    sendNotification(notification: Notification): void;
+    onNotification: (notification: Notification) => void;
   }
 
   export interface ISessionChannel {
-    sendSession(session: ISession): void;
+    sendSession(session: Session): void;
     onSession: ISessionListener;
   }
 
-  export interface IChannel extends IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
-    transport: ITransport;
-    remoteNode: string;
-    localNode: string;
-    sessionId: string;
-    state: string;
-  }
-
-
   export interface ISessionListener {
-    (session: ISession): void;
+    (session: Session): void;
   }
 
   export interface IEstablishSessionListener {
-    (error: Error, session: ISession): void;
+    (error: Error, session: Session): void;
   }
 }

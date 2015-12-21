@@ -1,8 +1,8 @@
 namespace Lime {
 
-  export interface INotification extends IEnvelope {
+  export interface Notification extends Envelope {
     event: string;
-    reason?: IReason;
+    reason?: Reason;
   }
 
   export class NotificationEvent {

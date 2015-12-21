@@ -1,27 +1,25 @@
 namespace Lime {
 
-  export class AuthenticationScheme {
+  export class Authentication {
+    scheme: string;
+
     static guest = "guest";
     static plain = "plain";
     static transport = "transport";
     static key = "key";
   }
-
-  export interface IAuthentication {
-    scheme: string;
+  export class GuestAuthentication extends Authentication {
+    scheme = Authentication.guest;
   }
-  export class GuestAuthentication implements IAuthentication {
-    scheme = AuthenticationScheme.guest;
+  export class TransportAuthentication extends Authentication {
+    scheme = Authentication.transport;
   }
-  export class TransportAuthentication implements IAuthentication {
-    scheme = AuthenticationScheme.transport;
-  }
-  export class PlainAuthentication implements IAuthentication {
-    scheme = AuthenticationScheme.plain;
+  export class PlainAuthentication extends Authentication {
+    scheme = Authentication.plain;
     password: string;
   }
-  export class KeyAuthentication implements IAuthentication {
-    scheme = AuthenticationScheme.key;
+  export class KeyAuthentication extends Authentication {
+    scheme = Authentication.key;
     key: string;
   }
 }
