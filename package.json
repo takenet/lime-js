@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "node_modules/.bin/tsd install",
     "build": "./node_modules/.bin/tsc --out lime.js",
-    "deploy": "npm publish",
+    "deploy": "npm publish"
   },
   "repository": {
     "type": "git",
