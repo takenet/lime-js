@@ -5,7 +5,8 @@
   "main": "lime.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
-    "watch": "./node_modules/.bin/webpack --watch"
+    "watch": "./node_modules/.bin/webpack --watch",
+    "deploy": "npm publish"
   },
   "repository": {
     "type": "git",
