@@ -2,7 +2,7 @@ import {Envelope} from "../Envelope";
 
 export interface Transport extends ITransportStateListener {
   send(envelope: Envelope): void;
-  onEnvelope: (envelope: Envelope) => any;
+  onEnvelope: (envelope: Envelope) => void;
 
   open(uri: string): void;
   close(): void;

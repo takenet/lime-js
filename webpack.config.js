@@ -8,7 +8,7 @@ module.exports = {
     libraryTarget: 'this'
   },
 
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']

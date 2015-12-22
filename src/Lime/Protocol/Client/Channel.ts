@@ -4,8 +4,9 @@ import {Command, CommandMethod, CommandStatus} from "../Command";
 import {Notification, NotificationEvent} from "../Notification";
 import {Session, SessionState} from "../Session";
 import {Transport} from "../Network/Transport";
+import {IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel} from "./IChannel";
 
-export class Channel {
+export class Channel implements IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
 

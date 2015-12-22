@@ -30,7 +30,7 @@
    */
   function establishSession(uri, identity, instance, password) {
     var transport = new Lime.WebSocketTransport(true);
-    var clientChannel = new Lime.ClientChannel(transport, true, true);
+    clientChannel = new Lime.ClientChannel(transport, true, true);
 
     clientChannel.onMessage = function(m) {
       utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
