@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface Notification extends Envelope {
     event: string;
     reason?: Reason;

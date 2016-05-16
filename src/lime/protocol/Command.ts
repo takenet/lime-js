@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface Command extends Envelope {
     uri?: string;
     type?: string;

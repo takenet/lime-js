@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export class ClientChannel extends ChannelBase {
 
     constructor(transport: Transport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {

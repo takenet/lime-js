@@ -30,8 +30,8 @@
    */
   function establishSession(uri, identity, instance, password) {
 
-    var transport = new Lime.WebSocketTransport(true);
-    clientChannel = new Lime.ClientChannel(transport, true, true);
+    var transport = new lime.WebSocketTransport(true);
+    clientChannel = new lime.ClientChannel(transport, true, true);
 
     clientChannel.onMessage = function (m) {
       utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
@@ -46,19 +46,19 @@
     transport.onOpen = function () {
       var authentication;
       if (password) {
-        authentication = new Lime.PlainAuthentication();
+        authentication = new lime.PlainAuthentication();
         authentication.password = btoa(password);
       } else {
-        authentication = new Lime.GuestAuthentication();
+        authentication = new lime.GuestAuthentication();
       }
 
-      Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function (err, s) {
+      lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function (err, s) {
         if (err) {
           return utils.logMessage("An error occurred: " + e);
         }
 
         utils.logMessage("Session id: " + s.id + " - State: " + s.state);
-        if (s.state === Lime.SessionState.established) {
+        if (s.state === lime.SessionState.established) {
           connectButton.disabled = true;
           disconnectButton.disabled = false;
         }
@@ -91,11 +91,12 @@
   window.setPresence = function (available) {
     var presenceCommand = {
       id: utils.newGuid(),
-      method: Lime.CommandMethod.set,
+      method: lime.CommandMethod.set,
       uri: "/presence",
       type: "application/vnd.lime.presence+json",
       resource: {
-        status: available ? "available" : "unavailable"
+        status: available ? "available" : "unavailable",
+        routingRule: "identity"
       }
     };
     clientChannel.sendCommand(presenceCommand);
@@ -104,7 +105,7 @@
   window.setReceipts = function () {
     var presenceCommand = {
       id: utils.newGuid(),
-      method: Lime.CommandMethod.set,
+      method: lime.CommandMethod.set,
       uri: "/receipt",
       type: "application/vnd.lime.receipt+json",
       resource: {

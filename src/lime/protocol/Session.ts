@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface Session extends Envelope {
     state: string;
     encryptionOptions?: string[];

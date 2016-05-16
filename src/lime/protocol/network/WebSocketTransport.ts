@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export class WebSocketTransport implements Transport {
     private traceEnabled: boolean;
     webSocket: WebSocket;

@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface Transport extends TransportStateListener {
     send(envelope: Envelope): void;
     onEnvelope: (envelope: Envelope) => void;

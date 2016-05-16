@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface MessageChannel {
     sendMessage(message: Message): void;
     onMessage: (message: Message) => void;
@@ -13,7 +13,7 @@ namespace Lime {
     sendNotification(notification: Notification): void;
     onNotification: (notification: Notification) => void;
   }
-
+ 
   export interface SessionChannel {
     sendSession(session: Session): void;
     onSession: SessionListener;

@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export class ChannelBase implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
     private autoReplyPings: boolean;
     private autoNotifyReceipt: boolean;

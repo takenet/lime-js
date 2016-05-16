@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export interface Envelope {
     id?: string;
     from?: string;

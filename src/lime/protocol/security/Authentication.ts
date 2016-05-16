@@ -1,4 +1,4 @@
-namespace Lime {
+namespace lime {
   export class Authentication {
     scheme: string;
 
