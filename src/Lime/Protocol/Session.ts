@@ -2,16 +2,12 @@ import {Envelope, Reason} from "./Envelope";
 
 export interface Session extends Envelope {
   state: string;
-
   encryptionOptions?: string[];
   encryption?: string;
-
   compressionOptions?: string[];
   compression?: string;
-
   scheme?: string;
   authentication?: any;
-
   reason?: Reason;
 }
 

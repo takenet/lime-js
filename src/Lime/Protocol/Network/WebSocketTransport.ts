@@ -70,4 +70,10 @@ export class WebSocketTransport implements Transport {
   onOpen(): void {}
   onClose(): void {}
   onError(error: Error) {}
+  
+  isConnected() {
+    return this.webSocket.readyState === WebSocket.OPEN;    
+  }
+  
+  
 }
