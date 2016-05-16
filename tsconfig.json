@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
-        "module": "system",
+        "module": "commonjs",
+        "sourceMap":  true,
+        "target": "es5",
         "rootDir": "./src",
         "outFile": "lime.js"
     }    
