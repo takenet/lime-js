@@ -1,7 +1,7 @@
 import {EstablishSessionListener} from "./Channel";
 import {ClientChannel} from "./ClientChannel";
 import {SessionState} from "../Session";
-import {Authentication} from "../Security/Authentication";
+import {Authentication} from "../security/Authentication";
 
 export class ClientChannelExtensions {
 

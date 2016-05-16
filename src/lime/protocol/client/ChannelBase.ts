@@ -3,7 +3,7 @@ import {Message} from "../Message";
 import {Command, CommandMethod, CommandStatus} from "../Command";
 import {Notification, NotificationEvent} from "../Notification";
 import {Session, SessionState} from "../Session";
-import {Transport} from "../Network/Transport";
+import {Transport} from "../network/Transport";
 import {MessageChannel, CommandChannel, NotificationChannel, SessionChannel} from "./Channel";
 
 export class ChannelBase implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {

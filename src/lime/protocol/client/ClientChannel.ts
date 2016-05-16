@@ -1,7 +1,7 @@
 import {ChannelBase} from "./ChannelBase";
-import {Transport} from "../Network/Transport";
+import {Transport} from "../network/Transport";
 import {Session, SessionState} from "../Session";
-import {Authentication} from "../Security/Authentication";
+import {Authentication} from "../security/Authentication";
 
 export class ClientChannel extends ChannelBase {
 
