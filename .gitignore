@@ -92,4 +92,4 @@ tmp/
 .DS_STORE
 **/.DS_STORE
 
-lime.*
+#lime.*
