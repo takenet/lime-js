@@ -1,17 +1,7 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "out": "lime.js",
-        "target": "es5",
+        "module": "system",
         "rootDir": "./src",
-        "noImplicitAny": false,
-        "declaration": true,
-        "sourceMap": true
-    },
-    "exclude": [
-        "node_modules"
-    ],
-    "atom": {
-        "rewriteTsconfig": false
-    }
+        "outFile": "lime.js"
+    }    
 }

@@ -1,9 +1,9 @@
-import {Channel} from "./Channel";
+import {ChannelBase} from "./ChannelBase";
 import {Transport} from "../Network/Transport";
 import {Session, SessionState} from "../Session";
 import {Authentication} from "../Security/Authentication";
 
-export class ClientChannel extends Channel {
+export class ClientChannel extends ChannelBase {
 
   constructor(transport: Transport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {
     super(transport, autoReplyPings, autoNotifyReceipt);

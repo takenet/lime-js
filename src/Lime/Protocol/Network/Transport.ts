@@ -1,6 +1,6 @@
 import {Envelope} from "../Envelope";
 
-export interface ITransport extends ITransportStateListener {
+export interface Transport extends TransportStateListener {
   send(envelope: Envelope): void;
   onEnvelope: (envelope: Envelope) => void;
 
@@ -18,11 +18,11 @@ export interface ITransport extends ITransportStateListener {
   isConnected(): boolean;
 }
 
-export interface ITransportEnvelopeListener {
+export interface TransportEnvelopeListener {
   (envelope: Envelope): void;
 }
 
-export interface ITransportStateListener {
+export interface TransportStateListener {
   onOpen: () => void;
   onClose: () => void;
   onError: (error: Error) => void;

@@ -15,7 +15,7 @@ export class CommandMethod {
   static delete = "delete";
   static observe = "observe";
   static subscribe = "subscribe";
-}
+} 
 
 export class CommandStatus {
   static success = "success";

@@ -1,11 +1,18 @@
-import {IEstablishSessionListener} from "./IChannel";
+import {EstablishSessionListener} from "./Channel";
 import {ClientChannel} from "./ClientChannel";
 import {SessionState} from "../Session";
 import {Authentication} from "../Security/Authentication";
 
 export class ClientChannelExtensions {
 
-  static establishSession(clientChannel: ClientChannel, compression: string, encryption: string, identity: string, authentication: Authentication, instance: string, callback: IEstablishSessionListener): void {
+  static establishSession(
+      clientChannel: ClientChannel, 
+      compression: string, 
+      encryption: string, 
+      identity: string, 
+      authentication: Authentication, 
+      instance: string, 
+      callback: EstablishSessionListener): void {
     if (clientChannel.state !== SessionState.new) {
       throw `Cannot establish a session in the '${clientChannel.state}' state.`;
     }

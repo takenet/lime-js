@@ -6,7 +6,7 @@ export interface Notification extends Envelope {
 }
 
 export class NotificationEvent {
-  static accepted = "accepted";
+  static accepted = "accepted";  
   static validated = "validated";
   static authorized = "authorized";
   static dispatched = "dispatched";
