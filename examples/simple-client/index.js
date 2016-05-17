@@ -52,7 +52,7 @@
         authentication = new lime.GuestAuthentication();
       }
 
-      lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function (err, s) {
+      lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function (s, err) {
         if (err) {
           return utils.logMessage("An error occurred: " + e);
         }

@@ -19,7 +19,7 @@ declare namespace lime {
         (session: Session): void;
     }
     interface EstablishSessionListener {
-        (error: Error, session: Session): void;
+        (session: Session, error: Error): void;
     }
 }
 declare namespace lime {

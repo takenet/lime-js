@@ -28,7 +28,7 @@ namespace lime {
           }
         } catch (err) {
           this.removeListeners(clientChannel);
-          callback(err, null);
+          callback(s, err);
         }
       }
 
@@ -37,21 +37,21 @@ namespace lime {
           clientChannel.authenticateSession(identity, authentication, instance);
         } catch (err) {
           this.removeListeners(clientChannel);
-          callback(err, null);
+          callback(s, err);          
         }
       }
 
       clientChannel.onSessionEstablished = clientChannel.onSessionFailed = (s) => {
         this.removeListeners(clientChannel);
-        callback(null, s);
+        callback(s, null);
       };
 
       try {
         clientChannel.startNewSession();
       } catch (err) {
         this.removeListeners(clientChannel);
-        callback(err, null);
-      }
+        callback(null, err);
+      }      
     }
 
     private static removeListeners(clientChannel: ClientChannel): void {

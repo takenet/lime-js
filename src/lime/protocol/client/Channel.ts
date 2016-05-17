@@ -24,6 +24,6 @@ namespace lime {
   }
 
   export interface EstablishSessionListener {
-    (error: Error, session: Session): void;
+    (session: Session, error: Error): void;
   }
 }

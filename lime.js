@@ -215,7 +215,7 @@ var lime;
                 }
                 catch (err) {
                     _this.removeListeners(clientChannel);
-                    callback(err, null);
+                    callback(s, err);
                 }
             };
             clientChannel.onSessionAuthenticating = function (s) {
@@ -224,19 +224,19 @@ var lime;
                 }
                 catch (err) {
                     _this.removeListeners(clientChannel);
-                    callback(err, null);
+                    callback(s, err);
                 }
             };
             clientChannel.onSessionEstablished = clientChannel.onSessionFailed = function (s) {
                 _this.removeListeners(clientChannel);
-                callback(null, s);
+                callback(s, null);
             };
             try {
                 clientChannel.startNewSession();
             }
             catch (err) {
                 this.removeListeners(clientChannel);
-                callback(err, null);
+                callback(null, err);
             }
         };
         ClientChannelExtensions.removeListeners = function (clientChannel) {

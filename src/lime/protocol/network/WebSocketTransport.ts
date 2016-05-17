@@ -29,14 +29,12 @@ namespace lime {
       }
 
       this.compression = SessionCompression.none;
-
       this.webSocket.onmessage = (e) => {
         if (this.traceEnabled) {
           console.debug(`WebSocket RECEIVE: ${e.data}`);
         }
         this.onEnvelope(<Envelope>JSON.parse(e.data));
       }
-
       this.webSocket.onopen = this.onOpen;
       this.webSocket.onclose = this.onClose;
       this.webSocket.onerror = (e) => {
