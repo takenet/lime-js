@@ -5,75 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var lime;
 (function (lime) {
-    var CommandMethod = (function () {
-        function CommandMethod() {
-        }
-        CommandMethod.get = "get";
-        CommandMethod.set = "set";
-        CommandMethod.delete = "delete";
-        CommandMethod.observe = "observe";
-        CommandMethod.subscribe = "subscribe";
-        return CommandMethod;
-    }());
-    lime.CommandMethod = CommandMethod;
-    var CommandStatus = (function () {
-        function CommandStatus() {
-        }
-        CommandStatus.success = "success";
-        CommandStatus.failure = "failure";
-        return CommandStatus;
-    }());
-    lime.CommandStatus = CommandStatus;
-})(lime || (lime = {}));
-var lime;
-(function (lime) {
-    var NotificationEvent = (function () {
-        function NotificationEvent() {
-        }
-        NotificationEvent.accepted = "accepted";
-        NotificationEvent.validated = "validated";
-        NotificationEvent.authorized = "authorized";
-        NotificationEvent.dispatched = "dispatched";
-        NotificationEvent.received = "received";
-        NotificationEvent.consumed = "consumed";
-        return NotificationEvent;
-    }());
-    lime.NotificationEvent = NotificationEvent;
-})(lime || (lime = {}));
-var lime;
-(function (lime) {
-    var SessionState = (function () {
-        function SessionState() {
-        }
-        SessionState.new = "new";
-        SessionState.negotiating = "negotiating";
-        SessionState.authenticating = "authenticating";
-        SessionState.established = "established";
-        SessionState.finishing = "finishing";
-        SessionState.finished = "finished";
-        SessionState.failed = "failed";
-        return SessionState;
-    }());
-    lime.SessionState = SessionState;
-    var SessionEncryption = (function () {
-        function SessionEncryption() {
-        }
-        SessionEncryption.none = "none";
-        SessionEncryption.tls = "tls";
-        return SessionEncryption;
-    }());
-    lime.SessionEncryption = SessionEncryption;
-    var SessionCompression = (function () {
-        function SessionCompression() {
-        }
-        SessionCompression.none = "none";
-        SessionCompression.gzip = "gzip";
-        return SessionCompression;
-    }());
-    lime.SessionCompression = SessionCompression;
-})(lime || (lime = {}));
-var lime;
-(function (lime) {
     var ChannelBase = (function () {
         function ChannelBase(transport, autoReplyPings, autoNotifyReceipt) {
             var _this = this;
@@ -428,4 +359,73 @@ var lime;
         return KeyAuthentication;
     }(Authentication));
     lime.KeyAuthentication = KeyAuthentication;
+})(lime || (lime = {}));
+var lime;
+(function (lime) {
+    var CommandMethod = (function () {
+        function CommandMethod() {
+        }
+        CommandMethod.get = "get";
+        CommandMethod.set = "set";
+        CommandMethod.delete = "delete";
+        CommandMethod.observe = "observe";
+        CommandMethod.subscribe = "subscribe";
+        return CommandMethod;
+    }());
+    lime.CommandMethod = CommandMethod;
+    var CommandStatus = (function () {
+        function CommandStatus() {
+        }
+        CommandStatus.success = "success";
+        CommandStatus.failure = "failure";
+        return CommandStatus;
+    }());
+    lime.CommandStatus = CommandStatus;
+})(lime || (lime = {}));
+var lime;
+(function (lime) {
+    var NotificationEvent = (function () {
+        function NotificationEvent() {
+        }
+        NotificationEvent.accepted = "accepted";
+        NotificationEvent.validated = "validated";
+        NotificationEvent.authorized = "authorized";
+        NotificationEvent.dispatched = "dispatched";
+        NotificationEvent.received = "received";
+        NotificationEvent.consumed = "consumed";
+        return NotificationEvent;
+    }());
+    lime.NotificationEvent = NotificationEvent;
+})(lime || (lime = {}));
+var lime;
+(function (lime) {
+    var SessionState = (function () {
+        function SessionState() {
+        }
+        SessionState.new = "new";
+        SessionState.negotiating = "negotiating";
+        SessionState.authenticating = "authenticating";
+        SessionState.established = "established";
+        SessionState.finishing = "finishing";
+        SessionState.finished = "finished";
+        SessionState.failed = "failed";
+        return SessionState;
+    }());
+    lime.SessionState = SessionState;
+    var SessionEncryption = (function () {
+        function SessionEncryption() {
+        }
+        SessionEncryption.none = "none";
+        SessionEncryption.tls = "tls";
+        return SessionEncryption;
+    }());
+    lime.SessionEncryption = SessionEncryption;
+    var SessionCompression = (function () {
+        function SessionCompression() {
+        }
+        SessionCompression.none = "none";
+        SessionCompression.gzip = "gzip";
+        return SessionCompression;
+    }());
+    lime.SessionCompression = SessionCompression;
 })(lime || (lime = {}));

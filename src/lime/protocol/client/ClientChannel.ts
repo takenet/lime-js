@@ -91,11 +91,10 @@ namespace lime {
       this.sendSession(session);
     }
 
-    onSessionNegotiating(session: Session) {}
-    onSessionAuthenticating(session: Session) {}
-    onSessionEstablished(session: Session) {}
-    onSessionFinished(session: Session) {}
-    onSessionFailed(session: Session) {}
+    onSessionNegotiating(session: Session) { }
+    onSessionAuthenticating(session: Session) { }
+    onSessionEstablished(session: Session) { }
+    onSessionFinished(session: Session) { }
+    onSessionFailed(session: Session) { }
   }
-
 }

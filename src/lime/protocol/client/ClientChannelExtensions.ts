@@ -1,6 +1,5 @@
 namespace lime {
   export class ClientChannelExtensions {
-
     static establishSession(
         clientChannel: ClientChannel, 
         compression: string, 

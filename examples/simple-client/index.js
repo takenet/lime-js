@@ -28,7 +28,7 @@
    * @param {String} instance
    * @param {String} password
    */
-  function establishSession(uri, identity, instance, password) {
+  function establishSession(uri, identity, instance, password) { 
 
     var transport = new lime.WebSocketTransport(true);
     clientChannel = new lime.ClientChannel(transport, true, true);

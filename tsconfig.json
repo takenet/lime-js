@@ -1,8 +1,22 @@
 {
     "compilerOptions": {
         "module": "amd",
-        "target": "es5",
-        "rootDir": "./src",
+        "target": "es5",        
+        "declaration": true,
         "outFile": "lime.js"
-    }    
+    },
+    "files": [
+        "./src/lime/protocol/client/Channel.ts",
+        "./src/lime/protocol/client/ChannelBase.ts",
+        "./src/lime/protocol/client/ClientChannel.ts",
+        "./src/lime/protocol/client/ClientChannelExtensions.ts",
+        "./src/lime/protocol/network/Transport.ts",
+        "./src/lime/protocol/network/WebSocketTransport.ts",
+        "./src/lime/protocol/security/Authentication.ts",
+        "./src/lime/protocol/Command.ts",
+        "./src/lime/protocol/Envelope.ts",
+        "./src/lime/protocol/Message.ts",
+        "./src/lime/protocol/Notification.ts",
+        "./src/lime/protocol/Session.ts"
+    ]
 }
