@@ -59,13 +59,17 @@ export class WebSocketTransport implements Transport {
     }
   }
 
-  getSupportedCompression(): string[] { throw new Error("Compression change is not supported"); }
-  setCompression(compression: string): void {}
-  compression: string;
+  getSupportedCompression(): SessionCompression[] {
+    throw new Error("Compression change is not supported");
+  }
+  setCompression(compression: SessionCompression): void {}
+  compression: SessionCompression;
 
-  getSupportedEncryption(): string[] { throw new Error("Encryption change is not supported"); }
-  setEncryption(encryption: string): void {}
-  encryption: string;
+  getSupportedEncryption(): SessionEncryption[] {
+    throw new Error("Encryption change is not supported");
+  }
+  setEncryption(encryption: SessionEncryption): void {}
+  encryption: SessionEncryption;
 
   onOpen(): void {}
   onClose(): void {}

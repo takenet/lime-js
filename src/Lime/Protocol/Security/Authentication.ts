@@ -1,22 +1,30 @@
 export class Authentication {
-  scheme: string;
-
-  static guest = "guest";
-  static plain = "plain";
-  static transport = "transport";
-  static key = "key";
+  scheme: AuthenticationScheme;
 }
 export class GuestAuthentication extends Authentication {
-  scheme = Authentication.guest;
+  scheme = AuthenticationScheme.Guest;
 }
 export class TransportAuthentication extends Authentication {
-  scheme = Authentication.transport;
+  scheme = AuthenticationScheme.Transport;
 }
 export class PlainAuthentication extends Authentication {
-  scheme = Authentication.plain;
+  scheme = AuthenticationScheme.Plain;
   password: string;
 }
 export class KeyAuthentication extends Authentication {
-  scheme = Authentication.key;
+  scheme = AuthenticationScheme.Key;
   key: string;
 }
+
+export const AuthenticationScheme = {
+  Guest: <AuthenticationScheme> "guest",
+  Plain: <AuthenticationScheme> "plain",
+  Transport: <AuthenticationScheme> "transport",
+  Key: <AuthenticationScheme> "key"
+};
+export type AuthenticationScheme
+  = "guest"
+  | "plain"
+  | "transport"
+  | "key"
+  ;

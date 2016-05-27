@@ -1,13 +1,13 @@
-import {Envelope, Reason} from "./Envelope";
+import {IEnvelope, Reason} from "./Envelope";
 
-export interface Session extends Envelope {
-  state: string;
+export interface Session extends IEnvelope {
+  state: SessionState;
 
-  encryptionOptions?: string[];
-  encryption?: string;
+  encryptionOptions?: SessionEncryption[];
+  encryption?: SessionEncryption;
 
-  compressionOptions?: string[];
-  compression?: string;
+  compressionOptions?: SessionCompression[];
+  compression?: SessionCompression;
 
   scheme?: string;
   authentication?: any;
@@ -15,22 +15,43 @@ export interface Session extends Envelope {
   reason?: Reason;
 }
 
-export class SessionState {
-  static new = "new";
-  static negotiating = "negotiating";
-  static authenticating = "authenticating";
-  static established = "established";
-  static finishing = "finishing";
-  static finished = "finished";
-  static failed = "failed";
+export interface ISessionListener {
+  onSession(command: Session): void;
 }
 
-export class SessionEncryption {
-  static none = "none";
-  static tls = "tls";
-}
+export const SessionState = {
+  New: <SessionState> "new",
+  Negotiating: <SessionState> "negotiating",
+  Authenticating: <SessionState> "authenticating",
+  Established: <SessionState> "established",
+  Finishing: <SessionState> "finishing",
+  Finished: <SessionState> "finished",
+  Failed: <SessionState> "failed",
+};
+export type SessionState
+  = "new"
+  | "negotiating"
+  | "authenticating"
+  | "established"
+  | "finishing"
+  | "finished"
+  | "failed"
+  ;
 
-export class SessionCompression {
-  static none = "none";
-  static gzip = "gzip";
-}
+export const SessionEncryption = {
+  none: <SessionEncryption> "none",
+  tls: <SessionEncryption> "tls"
+};
+export type SessionEncryption
+  = "none"
+  | "tls"
+  ;
+
+export const SessionCompression = {
+  none: <SessionCompression> "none",
+  gzip: <SessionCompression> "gzip"
+};
+export type SessionCompression
+  = "none"
+  | "gzip"
+  ;

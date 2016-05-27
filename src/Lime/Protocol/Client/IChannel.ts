@@ -1,33 +1,21 @@
 import {Envelope} from "../Envelope";
-import {Message} from "../Message";
-import {Notification} from "../Notification";
-import {Command} from "../Command";
-import {Session} from "../Session";
+import {Message, IMessageListener} from "../Message";
+import {Notification, INotificationListener} from "../Notification";
+import {Command, ICommandListener} from "../Command";
+import {Session, ISessionListener} from "../Session";
 
-export interface IMessageChannel {
+export interface IMessageChannel extends IMessageListener {
   sendMessage(message: Message): void;
-  onMessage: (message: Message) => void;
 }
 
-export interface ICommandChannel {
+export interface ICommandChannel extends ICommandListener {
   sendCommand(command: Command): void;
-  onCommand: (command: Command) => void;
 }
 
-export interface INotificationChannel {
+export interface INotificationChannel extends INotificationListener {
   sendNotification(notification: Notification): void;
-  onNotification: (notification: Notification) => void;
 }
 
-export interface ISessionChannel {
+export interface ISessionChannel extends ISessionListener {
   sendSession(session: Session): void;
-  onSession: ISessionListener;
-}
-
-export interface ISessionListener {
-  (session: Session): void;
-}
-
-export interface IEstablishSessionListener {
-  (error: Error, session: Session): void;
 }

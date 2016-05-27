@@ -1,23 +1,38 @@
-import {Envelope, Reason} from "./Envelope";
+import {IEnvelope, Reason} from "./Envelope";
 
-export interface Command extends Envelope {
+export interface Command extends IEnvelope {
   uri?: string;
   type?: string;
   resource?: any;
-  method: string;
-  status?: string;
+  method: CommandMethod;
+  status?: CommandStatus;
   reason?: Reason;
 }
 
-export class CommandMethod {
-  static get = "get";
-  static set = "set";
-  static delete = "delete";
-  static observe = "observe";
-  static subscribe = "subscribe";
+export interface ICommandListener {
+  onCommand(command: Command): void;
 }
 
-export class CommandStatus {
-  static success = "success";
-  static failure = "failure";
+export const CommandMethod = {
+  Get: <CommandMethod> "get",
+  Set: <CommandMethod> "set",
+  Delete: <CommandMethod> "delete",
+  Observe: <CommandMethod> "observe",
+  Subscribe: <CommandMethod> "subscribe"
 }
+export type CommandMethod
+  = "get"
+  | "set"
+  | "delete"
+  | "observe"
+  | "subscribe"
+  ;
+
+export const CommandStatus = {
+  Success: <CommandStatus> "success",
+  Failure: <CommandStatus> "failure"
+}
+export type CommandStatus
+  = "success"
+  | "failure"
+  ;

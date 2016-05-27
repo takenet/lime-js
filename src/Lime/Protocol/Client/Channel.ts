@@ -6,98 +6,104 @@ import {Session, SessionState} from "../Session";
 import {Transport} from "../Network/Transport";
 import {IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel} from "./IChannel";
 
-export class Channel implements IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
+export abstract class Channel implements IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
+
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
-
-  constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
-    this.autoReplyPings = autoReplyPings;
-    this.autoNotifyReceipt = autoNotifyReceipt;
-    this.transport = transport;
-    this.state = SessionState.new;
-
-    this.transport.onEnvelope = (e) => {
-      if (e.hasOwnProperty("event")) {
-        this.onNotification(<Notification>e);
-      } else if (e.hasOwnProperty("content")) {
-        const message = <Message>e;
-        if (this.autoNotifyReceipt &&
-          message.id &&
-          message.from)
-        {
-          const notification: Notification = {
-            id: message.id,
-            to: message.from,
-            event: NotificationEvent.received
-          };
-          this.sendNotification(notification);
-        }
-        this.onMessage(message);
-      } else if (e.hasOwnProperty("method")) {
-        const command = <Command>e;
-        if (this.autoReplyPings &&
-          command.id &&
-          command.from &&
-          command.uri === "/ping" &&
-          command.method === CommandMethod.get)
-        {
-          const pingCommandResponse: Command = {
-            id: command.id,
-            to: command.from,
-            method: CommandMethod.get,
-            status: CommandStatus.success,
-            type: "application/vnd.lime.ping+json"
-          }
-          this.sendCommand(pingCommandResponse);
-        } else {
-          this.onCommand(command);
-        }
-      } else if (e.hasOwnProperty("state")) {
-        this.onSession(<Session>e);
-      }
-    };
-  }
-
-  sendMessage(message: Message) {
-    if (this.state !== SessionState.established) {
-      throw new Error(`Cannot send in the '${this.state}' state`);
-    }
-    this.send(message);
-  }
-  onMessage(message: Message) { }
-
-  sendCommand(command: Command) {
-    if (this.state !== SessionState.established) {
-      throw new Error(`Cannot send in the '${this.state}' state`);
-    }
-    this.send(command);
-  }
-  onCommand(command: Command) { }
-
-  sendNotification(notification: Notification) {
-    if (this.state !== SessionState.established) {
-      throw new Error(`Cannot send in the '${this.state}' state`);
-    }
-    this.send(notification);
-  }
-  onNotification(notification: Notification) { }
-
-  sendSession(session: Session) {
-    if (this.state === SessionState.finished ||
-      this.state === SessionState.failed) {
-      throw new Error(`Cannot send in the '${this.state}' state`);
-    }
-    this.send(session);
-  }
-  onSession(session: Session) { }
 
   transport: Transport;
   remoteNode: string;
   localNode: string;
   sessionId: string;
-  state: string;
+  state: SessionState;
+
+  constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
+    this.autoReplyPings = autoReplyPings;
+    this.autoNotifyReceipt = autoNotifyReceipt;
+    this.transport = transport;
+    this.state = SessionState.New;
+
+    this.transport.onEnvelope = (envelope) => {
+      // Message
+      if (Envelope.isMessage(envelope)) {
+        const message = <Message>envelope;
+        this.notifyMessage(message);
+        this.onMessage(message);
+      }
+      // Notification
+      else if (Envelope.isNotification(envelope)) {
+        const notification = <Notification>envelope;
+        this.onNotification(notification);
+      }
+      // Command
+      else if (Envelope.isCommand(envelope)) {
+        const command = <Command>envelope;
+        if (this.autoReplyPings && command.id && command.from &&
+          command.uri === "/ping" && command.method === CommandMethod.Get)
+        {
+          const pingCommandResponse = {
+            id: command.id,
+            to: command.from,
+            method: CommandMethod.Get,
+            status: CommandStatus.Success,
+            type: "application/vnd.lime.ping+json"
+          }
+          this.sendCommand(pingCommandResponse);
+        }
+        this.onCommand(command);
+      }
+      // Session
+      else if (Envelope.isSession(envelope)) {
+        const session = <Session>envelope;
+        this.onSession(session);
+      }
+    };
+  }
+
+  sendMessage(message: Message) {
+    if (this.state !== SessionState.Established) {
+      throw new Error(`Cannot send in the '${this.state}' state`);
+    }
+    this.send(message);
+  }
+  abstract onMessage(message: Message): void;
+
+  sendCommand(command: Command) {
+    if (this.state !== SessionState.Established) {
+      throw new Error(`Cannot send in the '${this.state}' state`);
+    }
+    this.send(command);
+  }
+  abstract onCommand(message: Command): void;
+
+  sendNotification(notification: Notification) {
+    if (this.state !== SessionState.Established) {
+      throw new Error(`Cannot send in the '${this.state}' state`);
+    }
+    this.send(notification);
+  }
+  abstract onNotification(message: Notification): void;
+
+  sendSession(session: Session) {
+    if (this.state === SessionState.Finished || this.state === SessionState.Failed) {
+      throw new Error(`Cannot send in the '${this.state}' state`);
+    }
+    this.send(session);
+  }
+  abstract onSession(message: Session): void;
 
   private send(envelope: Envelope) {
     this.transport.send(envelope);
+  }
+
+  private notifyMessage(message: Message) {
+    if (this.autoNotifyReceipt && message.id && message.from) {
+      const notification: Notification = {
+        id: message.id,
+        to: message.from,
+        event: NotificationEvent.Received
+      };
+      this.sendNotification(notification);
+    }
   }
 }

@@ -1,27 +1,17 @@
-import {Envelope} from "../Envelope";
+import {Envelope, IEnvelopeListener} from "../Envelope";
+import {SessionCompression, SessionEncryption} from "../Session";
 
-export interface Transport extends ITransportStateListener {
-  send(envelope: Envelope): void;
-  onEnvelope: (envelope: Envelope) => void;
-
+export interface Transport extends IEnvelopeListener {
   open(uri: string): void;
   close(): void;
 
-  getSupportedCompression(): string[];
-  setCompression(compression: string): void;
-  compression: string;
+  send(envelope: Envelope): void;
 
-  getSupportedEncryption(): string[];
-  setEncryption(encryption: string): void;
-  encryption: string;
-}
+  getSupportedCompression(): SessionCompression[];
+  setCompression(compression: SessionCompression): void;
+  compression: SessionCompression;
 
-export interface ITransportEnvelopeListener {
-  (envelope: Envelope): void;
-}
-
-export interface ITransportStateListener {
-  onOpen: () => void;
-  onClose: () => void;
-  onError: (error: Error) => void;
+  getSupportedEncryption(): SessionEncryption[];
+  setEncryption(encryption: SessionEncryption): void;
+  encryption: SessionEncryption;
 }
