@@ -15,7 +15,7 @@ export const Envelope = {
   isMessage: (envelope: Envelope) => envelope.hasOwnProperty('content'),
   isNotification: (envelope: Envelope) => envelope.hasOwnProperty('event'),
   isCommand: (envelope: Envelope) => envelope.hasOwnProperty('method'),
-  isSession: (envelope: Envelope) => envelope.hasOwnProperty('status')
+  isSession: (envelope: Envelope) => envelope.hasOwnProperty('state')
 };
 
 export interface Reason {
