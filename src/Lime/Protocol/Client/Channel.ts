@@ -21,7 +21,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
     this.autoReplyPings = autoReplyPings;
     this.autoNotifyReceipt = autoNotifyReceipt;
     this.transport = transport;
-    this.state = SessionState.New;
+    this.state = SessionState.NEW;
 
     this.transport.onEnvelope = (envelope) => {
       // Message
@@ -39,13 +39,13 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
         if (this.autoReplyPings && command.id && command.from &&
-          command.uri === "/ping" && command.method === CommandMethod.Get)
+          command.uri === "/ping" && command.method === CommandMethod.GET)
         {
           const pingCommandResponse = {
             id: command.id,
             to: command.from,
-            method: CommandMethod.Get,
-            status: CommandStatus.Success,
+            method: CommandMethod.GET,
+            status: CommandStatus.SUCCESS,
             type: "application/vnd.lime.ping+json"
           }
           this.sendCommand(pingCommandResponse);
@@ -61,7 +61,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
   }
 
   sendMessage(message: Message) {
-    if (this.state !== SessionState.Established) {
+    if (this.state !== SessionState.ESTABLISHED) {
       throw new Error(`Cannot send in the '${this.state}' state`);
     }
     this.send(message);
@@ -69,7 +69,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
   abstract onMessage(message: Message): void;
 
   sendCommand(command: Command) {
-    if (this.state !== SessionState.Established) {
+    if (this.state !== SessionState.ESTABLISHED) {
       throw new Error(`Cannot send in the '${this.state}' state`);
     }
     this.send(command);
@@ -77,7 +77,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
   abstract onCommand(message: Command): void;
 
   sendNotification(notification: Notification) {
-    if (this.state !== SessionState.Established) {
+    if (this.state !== SessionState.ESTABLISHED) {
       throw new Error(`Cannot send in the '${this.state}' state`);
     }
     this.send(notification);
@@ -85,7 +85,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
   abstract onNotification(message: Notification): void;
 
   sendSession(session: Session) {
-    if (this.state === SessionState.Finished || this.state === SessionState.Failed) {
+    if (this.state === SessionState.FINISHED || this.state === SessionState.FAILED) {
       throw new Error(`Cannot send in the '${this.state}' state`);
     }
     this.send(session);
@@ -101,7 +101,7 @@ export abstract class Channel implements IMessageChannel, ICommandChannel, INoti
       const notification: Notification = {
         id: message.id,
         to: message.from,
-        event: NotificationEvent.Received
+        event: NotificationEvent.RECEIVED
       };
       this.sendNotification(notification);
     }

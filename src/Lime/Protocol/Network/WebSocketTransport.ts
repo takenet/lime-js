@@ -26,12 +26,12 @@ export class WebSocketTransport implements Transport {
     this.webSocket = new WebSocket(uri, "lime");
 
     if (uri.indexOf("wss://") > -1) {
-      this.encryption = SessionEncryption.tls;
+      this.encryption = SessionEncryption.TLS;
     } else {
-      this.encryption = SessionEncryption.none;
+      this.encryption = SessionEncryption.NONE;
     }
 
-    this.compression = SessionCompression.none;
+    this.compression = SessionCompression.NONE;
 
     this.webSocket.onmessage = (e) => {
       if (this.traceEnabled) {

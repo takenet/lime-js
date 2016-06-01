@@ -14,11 +14,11 @@ export interface ICommandListener {
 }
 
 export const CommandMethod = {
-  Get: <CommandMethod> "get",
-  Set: <CommandMethod> "set",
-  Delete: <CommandMethod> "delete",
-  Observe: <CommandMethod> "observe",
-  Subscribe: <CommandMethod> "subscribe"
+  GET: <CommandMethod> "get",
+  SET: <CommandMethod> "set",
+  DELETE: <CommandMethod> "delete",
+  OBSERVE: <CommandMethod> "observe",
+  SUBSCRIBE: <CommandMethod> "subscribe"
 }
 export type CommandMethod
   = "get"
@@ -29,8 +29,8 @@ export type CommandMethod
   ;
 
 export const CommandStatus = {
-  Success: <CommandStatus> "success",
-  Failure: <CommandStatus> "failure"
+  SUCCESS: <CommandStatus> "success",
+  FAILURE: <CommandStatus> "failure"
 }
 export type CommandStatus
   = "success"

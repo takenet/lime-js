@@ -10,12 +10,12 @@ export interface INotificationListener {
 }
 
 export const NotificationEvent = {
-  Accepted: <NotificationEvent> "accepted",
-  Validated: <NotificationEvent> "validated",
-  Authorized: <NotificationEvent> "authorized",
-  Dispatched: <NotificationEvent> "dispatched",
-  Received: <NotificationEvent> "received",
-  Consumed: <NotificationEvent> "consumed"
+  ACCEPTED: <NotificationEvent> "accepted",
+  VALIDATED: <NotificationEvent> "validated",
+  AUTHORIZED: <NotificationEvent> "authorized",
+  DISPATCHED: <NotificationEvent> "dispatched",
+  RECEIVED: <NotificationEvent> "received",
+  CONSUMED: <NotificationEvent> "consumed"
 };
 export type NotificationEvent
   = "accepted"

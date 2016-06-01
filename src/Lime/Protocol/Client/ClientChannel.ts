@@ -14,7 +14,7 @@ export class ClientChannel extends Channel {
 
 
   establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string, callback: (error: Error, session: Session) => void): void {
-    if (this.state !== SessionState.New) {
+    if (this.state !== SessionState.NEW) {
       throw `Cannot establish a session in the '${this.state}' state.`;
     }
 
@@ -75,10 +75,10 @@ export class ClientChannel extends Channel {
     this.sessionId = session.id;
     this.state = session.state;
 
-    if (session.state === SessionState.Established) {
+    if (session.state === SessionState.ESTABLISHED) {
       this.localNode = session.to;
       this.remoteNode = session.from;
-    } else if (session.state === SessionState.Finished || session.state === SessionState.Failed) {
+    } else if (session.state === SessionState.FINISHED || session.state === SessionState.FAILED) {
       try {
         this.transport.close();
       } catch (e) {
@@ -87,43 +87,43 @@ export class ClientChannel extends Channel {
     }
 
     switch (session.state) {
-      case SessionState.Negotiating:
+      case SessionState.NEGOTIATING:
         this.onSessionNegotiating(session);
         break;
-      case SessionState.Authenticating:
+      case SessionState.AUTHENTICATING:
         this.onSessionAuthenticating(session);
         break;
-      case SessionState.Established:
+      case SessionState.ESTABLISHED:
         this.onSessionEstablished(session);
         break;
-      case SessionState.Finished:
+      case SessionState.FINISHED:
         this.onSessionFinished(session);
         break;
-      case SessionState.Failed:
+      case SessionState.FAILED:
         this.onSessionFailed(session);
       default:
     }
   }
 
   startNewSession() {
-    if (this.state !== SessionState.New) {
+    if (this.state !== SessionState.NEW) {
       throw `Cannot start a session in the '${this.state}' state.`;
     }
 
     const session: Session = {
-      state: SessionState.New
+      state: SessionState.NEW
     };
     this.sendSession(session);
   }
 
   negotiateSession(sessionCompression: SessionCompression, sessionEncryption: SessionEncryption) {
-    if (this.state !== SessionState.Negotiating) {
+    if (this.state !== SessionState.NEGOTIATING) {
       throw `Cannot negotiate a session in the '${this.state}' state.`;
     }
 
     const session: Session = {
       id: this.sessionId,
-      state: SessionState.Negotiating,
+      state: SessionState.NEGOTIATING,
       compression: sessionCompression,
       encryption: sessionEncryption
     };
@@ -131,13 +131,13 @@ export class ClientChannel extends Channel {
   }
 
   authenticateSession(identity: string, authentication: Authentication, instance: string) {
-    if (this.state !== SessionState.Authenticating) {
+    if (this.state !== SessionState.AUTHENTICATING) {
       throw `Cannot authenticate a session in the '${this.state}' state.`;
     }
 
     const session: Session = {
       id: this.sessionId,
-      state: SessionState.Authenticating,
+      state: SessionState.AUTHENTICATING,
       from: `${identity}/${instance}`,
       scheme: authentication.scheme || "unknown",
       authentication: authentication
@@ -146,13 +146,13 @@ export class ClientChannel extends Channel {
   }
 
   sendFinishingSession() {
-    if (this.state !== SessionState.Established) {
+    if (this.state !== SessionState.ESTABLISHED) {
       throw `Cannot finish a session in the '${this.state}' state.`;
     }
 
     const session: Session = {
       id: this.sessionId,
-      state: SessionState.Finishing
+      state: SessionState.FINISHING
     };
     this.sendSession(session);
   }

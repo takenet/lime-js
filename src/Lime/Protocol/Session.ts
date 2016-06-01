@@ -20,13 +20,13 @@ export interface ISessionListener {
 }
 
 export const SessionState = {
-  New: <SessionState> "new",
-  Negotiating: <SessionState> "negotiating",
-  Authenticating: <SessionState> "authenticating",
-  Established: <SessionState> "established",
-  Finishing: <SessionState> "finishing",
-  Finished: <SessionState> "finished",
-  Failed: <SessionState> "failed",
+  NEW: <SessionState> "new",
+  NEGOTIATING: <SessionState> "negotiating",
+  AUTHENTICATING: <SessionState> "authenticating",
+  ESTABLISHED: <SessionState> "established",
+  FINISHING: <SessionState> "finishing",
+  FINISHED: <SessionState> "finished",
+  FAILED: <SessionState> "failed",
 };
 export type SessionState
   = "new"
@@ -39,8 +39,8 @@ export type SessionState
   ;
 
 export const SessionEncryption = {
-  none: <SessionEncryption> "none",
-  tls: <SessionEncryption> "tls"
+  NONE: <SessionEncryption> "none",
+  TLS: <SessionEncryption> "tls"
 };
 export type SessionEncryption
   = "none"
@@ -48,8 +48,8 @@ export type SessionEncryption
   ;
 
 export const SessionCompression = {
-  none: <SessionCompression> "none",
-  gzip: <SessionCompression> "gzip"
+  NONE: <SessionCompression> "none",
+  GZIP: <SessionCompression> "gzip"
 };
 export type SessionCompression
   = "none"
