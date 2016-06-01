@@ -33,7 +33,7 @@
     clientChannel = new Lime.ClientChannel(transport, true, true);
 
     clientChannel.onMessage = function(m) {
-      utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + m.content);
+      utils.logMessage("Message received - From: " + m.from + " - To: " + m.to + " - Content: " + JSON.stringify(m.content));
     };
     clientChannel.onNotification = function(n) {
       utils.logMessage("Notification received - From: " + n.from + " - To: " + n.to + " - Event: " + n.event + " - Reason: " + n.reason);
@@ -51,7 +51,7 @@
         authentication = new Lime.GuestAuthentication();
       }
 
-      Lime.ClientChannelExtensions.establishSession(clientChannel, "none", "none", identity, authentication, instance, function(err, s) {
+      clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance, function(err, s) {
         if(err) {
           return utils.logMessage("An error occurred: " + e);
         }

@@ -12,7 +12,6 @@ export class ClientChannel extends Channel {
     super(transport, autoReplyPings, autoNotifyReceipt);
   }
 
-
   establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string, callback: (error: Error, session: Session) => void): void {
     if (this.state !== SessionState.NEW) {
       throw `Cannot establish a session in the '${this.state}' state.`;
