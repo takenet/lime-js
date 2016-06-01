@@ -5,6 +5,7 @@ import {Session, SessionCompression, SessionEncryption, SessionState} from "../S
 import {Channel} from "./Channel";
 import {Transport} from "../Network/Transport";
 import {Authentication} from "../Security/Authentication";
+import {Promise} from "es6-promise";
 
 export class ClientChannel extends Channel {
 
@@ -12,58 +13,27 @@ export class ClientChannel extends Channel {
     super(transport, autoReplyPings, autoNotifyReceipt);
   }
 
-  establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string, callback: (error: Error, session: Session) => void): void {
+  establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string): Promise<Session> {
     if (this.state !== SessionState.NEW) {
       throw `Cannot establish a session in the '${this.state}' state.`;
     }
 
-    this.onSessionNegotiating = (s) => {
-      try {
-        // Has encryption or compression options? ==> negotiate session with parameter or options
-        if (s.encryptionOptions != null || s.compressionOptions != null) {
-          this.negotiateSession(compression || s.compressionOptions[0], encryption || s.encryptionOptions[0]);
-        } else {
-          // Apply transport options
-          if (s.compression !== this.transport.compression) {
-            this.transport.setCompression(s.compression);
-          }
-          if (s.encryption !== this.transport.encryption) {
-            this.transport.setEncryption(s.encryption);
-          }
+    return this.startNewSession()
+      .then((session) => {
+        if (session.encryptionOptions != null || session.compressionOptions != null) {
+          return this.negotiateSession(compression || session.compressionOptions[0], encryption || session.encryptionOptions[0]);
         }
-      } catch (err) {
-        this.removeListeners();
-        callback(err, null);
-      }
-    }
 
-    this.onSessionAuthenticating = (s) => {
-      try {
-        this.authenticateSession(identity, authentication, instance);
-      } catch (err) {
-        this.removeListeners();
-        callback(err, null);
-      }
-    }
-
-    this.onSessionEstablished = this.onSessionFailed = (s) => {
-      this.removeListeners();
-      callback(null, s);
-    };
-
-    try {
-      this.startNewSession();
-    } catch (err) {
-      this.removeListeners();
-      callback(err, null);
-    }
-  }
-
-  private removeListeners(): void {
-    this.onSessionNegotiating = null;
-    this.onSessionAuthenticating = null;
-    this.onSessionEstablished = null;
-    this.onSessionFailed = null;
+        // Apply transport options
+        if (session.compression !== this.transport.compression) {
+          this.transport.setCompression(session.compression);
+        }
+        if (session.encryption !== this.transport.encryption) {
+          this.transport.setEncryption(session.encryption);
+        }
+        return session;
+      })
+      .then((session) => this.authenticateSession(identity, authentication, instance));
   }
 
   onMessage(message: Message) {}
@@ -104,21 +74,33 @@ export class ClientChannel extends Channel {
     }
   }
 
-  startNewSession() {
+  startNewSession(): Promise<Session> {
     if (this.state !== SessionState.NEW) {
       throw `Cannot start a session in the '${this.state}' state.`;
     }
+
+    let promise = new Promise((resolve, reject) => {
+      this.onSessionFailed = reject;
+      this.onSessionNegotiating = this.onSessionAuthenticating = resolve;
+    });
 
     const session: Session = {
       state: SessionState.NEW
     };
     this.sendSession(session);
+
+    return promise;
   }
 
-  negotiateSession(sessionCompression: SessionCompression, sessionEncryption: SessionEncryption) {
+  negotiateSession(sessionCompression: SessionCompression, sessionEncryption: SessionEncryption): Promise<Session> {
     if (this.state !== SessionState.NEGOTIATING) {
       throw `Cannot negotiate a session in the '${this.state}' state.`;
     }
+
+    let promise = new Promise((resolve, reject) => {
+      this.onSessionFailed = reject;
+      this.onSessionAuthenticating = resolve;
+    });
 
     const session: Session = {
       id: this.sessionId,
@@ -127,12 +109,19 @@ export class ClientChannel extends Channel {
       encryption: sessionEncryption
     };
     this.sendSession(session);
+
+    return promise;
   }
 
-  authenticateSession(identity: string, authentication: Authentication, instance: string) {
+  authenticateSession(identity: string, authentication: Authentication, instance: string): Promise<Session> {
     if (this.state !== SessionState.AUTHENTICATING) {
       throw `Cannot authenticate a session in the '${this.state}' state.`;
     }
+
+    let promise = new Promise((resolve, reject) => {
+      this.onSessionFailed = reject;
+      this.onSessionEstablished = resolve;
+    });
 
     const session: Session = {
       id: this.sessionId,
@@ -142,23 +131,32 @@ export class ClientChannel extends Channel {
       authentication: authentication
     };
     this.sendSession(session);
+
+    return promise;
   }
 
-  sendFinishingSession() {
+  sendFinishingSession(): Promise<Session> {
     if (this.state !== SessionState.ESTABLISHED) {
       throw `Cannot finish a session in the '${this.state}' state.`;
     }
+
+    let promise = new Promise((resolve, reject) => {
+      this.onSessionFailed = reject;
+      this.onSessionFinished = resolve;
+    });
 
     const session: Session = {
       id: this.sessionId,
       state: SessionState.FINISHING
     };
     this.sendSession(session);
+
+    return promise;
   }
 
-  onSessionNegotiating(session: Session) {}
-  onSessionAuthenticating(session: Session) {}
-  onSessionEstablished(session: Session) {}
-  onSessionFinished(session: Session) {}
-  onSessionFailed(session: Session) {}
+  private onSessionNegotiating(session: Session) {}
+  private onSessionAuthenticating(session: Session) {}
+  private onSessionEstablished(session: Session) {}
+  private onSessionFinished(session: Session) {}
+  private onSessionFailed(session: Session) {}
 }

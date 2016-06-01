@@ -51,17 +51,28 @@
         authentication = new Lime.GuestAuthentication();
       }
 
-      clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance, function(err, s) {
-        if(err) {
-          return utils.logMessage("An error occurred: " + e);
-        }
-
-        utils.logMessage("Session id: " + s.id + " - State: " + s.state);
-        if (s.state === Lime.SessionState.established) {
-          connectButton.disabled = true;
-          disconnectButton.disabled = false;
-        }
-      });
+      // clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance, function(err, s) {
+      //   if(err) {
+      //     return utils.logMessage("An error occurred: " + e);
+      //   }
+      //
+      //   utils.logMessage("Session id: " + s.id + " - State: " + s.state);
+      //   if (s.state === Lime.SessionState.established) {
+      //     connectButton.disabled = true;
+      //     disconnectButton.disabled = false;
+      //   }
+      // });
+      clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance)
+        .then(function(session) {
+          utils.logMessage("Session id: " + session.id + " - State: " + session.state);
+          if (session.state === Lime.SessionState.established) {
+            connectButton.disabled = true;
+            disconnectButton.disabled = false;
+          }
+        })
+        .catch(function(err) {
+          utils.logMessage("An error occurred: " + err);
+        });
     };
     transport.onClose = function() {
       connectButton.disabled = false;
