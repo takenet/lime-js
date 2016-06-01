@@ -11,20 +11,19 @@ npm install
 
 Then, in order to build the source code:
 ```
-gulp
+npm run build
 ```
 or
 ```
-gulp
-gulp watch
+npm run watch
 ```
 
 ## TODO
 - Review and refactor:
     * [X] Envelopes
-    * [ ] Authentication
-    * [ ] Channel
-    * [ ] ClientChannel
+    * [X] Authentication
+    * [X] Channel
+    * [X] ClientChannel
     * [X] Transport
 
 
@@ -35,8 +34,7 @@ gulp watch
 - [ ] Make the library as easy as possible to use for a native JS programmer
 
 
-- [ ] Find out how/if Promises could be useful
-- [ ] Find out how/if Rx-like Observables could be useful
+- [X] Find out how/if Promises could be useful
 
 
 - [ ] AJAX transport
