@@ -1,17 +1,13 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "out": "lime.js",
-        "target": "es5",
-        "rootDir": "./src",
-        "noImplicitAny": false,
-        "declaration": true,
-        "sourceMap": true
-    },
-    "exclude": [
-        "node_modules"
-    ],
-    "atom": {
-        "rewriteTsconfig": false
-    }
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": false,
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
