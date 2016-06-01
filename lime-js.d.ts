@@ -3,206 +3,228 @@
 // Definitions by: Arthur Xavier <https://github.com/arthur-xavier>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-declare module Lime {
-
-    interface Envelope {
-        id?: string;
-        from?: string;
-        to?: string;
-        pp?: string;
-        metadata?: any;
-    }
-    interface Reason {
-        code: number;
-        description?: string;
-    }
-
-    interface Message extends Envelope {
-        type: string;
-        content: any;
-    }
-
-    interface Notification extends Envelope {
-        event: string;
-        reason?: Reason;
-    }
-    class NotificationEvent {
-        static accepted: string;
-        static validated: string;
-        static authorized: string;
-        static dispatched: string;
-        static received: string;
-        static consumed: string;
-    }
-
-    interface Command extends Envelope {
-        uri?: string;
-        type?: string;
-        resource?: any;
-        method: string;
-        status?: string;
-        reason?: Reason;
-    }
-    class CommandMethod {
-        static get: string;
-        static set: string;
-        static delete: string;
-        static observe: string;
-        static subscribe: string;
-    }
-    class CommandStatus {
-        static success: string;
-        static failure: string;
-    }
-
-    interface Session extends Envelope {
-        state: string;
-        encryptionOptions?: string[];
-        encryption?: string;
-        compressionOptions?: string[];
-        compression?: string;
-        scheme?: string;
-        authentication?: any;
-        reason?: Reason;
-    }
-    class SessionState {
-        static new: string;
-        static negotiating: string;
-        static authenticating: string;
-        static established: string;
-        static finishing: string;
-        static finished: string;
-        static failed: string;
-    }
-    class SessionEncryption {
-        static none: string;
-        static tls: string;
-    }
-    class SessionCompression {
-        static none: string;
-        static gzip: string;
-    }
-
-    class Authentication {
-        scheme: string;
-        static guest: string;
-        static plain: string;
-        static transport: string;
-        static key: string;
-    }
-    class GuestAuthentication extends Authentication {
-        scheme: string;
-    }
-    class TransportAuthentication extends Authentication {
-        scheme: string;
-    }
-    class PlainAuthentication extends Authentication {
-        scheme: string;
-        password: string;
-    }
-    class KeyAuthentication extends Authentication {
-        scheme: string;
-        key: string;
-    }
-
-    interface IMessageChannel {
-        sendMessage(message: Message): void;
-        onMessage: (message: Message) => any;
-    }
-    interface ICommandChannel {
-        sendCommand(command: Command): void;
-        onCommand: (command: Command) => void;
-    }
-    interface INotificationChannel {
-        sendNotification(notification: Notification): void;
-        onNotification: (notification: Notification) => any;
-    }
-    interface ISessionChannel {
-        sendSession(session: Session): void;
-        onSession: ISessionListener;
-    }
-    interface ISessionListener {
-        (session: Session): void;
-    }
-
-    interface IEstablishSessionListener {
-      (error: Error, session: Session): void;
-    }
-
-    class Channel implements IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
-        constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean);
-        sendMessage(message: Message): void;
-        onMessage(message: Message): void;
-        sendCommand(command: Command): void;
-        onCommand(command: Command): void;
-        sendNotification(notification: Notification): void;
-        onNotification(notification: Notification): void;
-        sendSession(session: Session): void;
-        onSession(session: Session): void;
-        transport: Transport;
-        remoteNode: string;
-        localNode: string;
-        sessionId: string;
-        state: string;
-    }
-
-    class ClientChannel extends Channel {
-        constructor(transport: Transport, autoReplyPings?: boolean, autoNotifyReceipt?: boolean);
-        startNewSession(): void;
-        negotiateSession(sessionCompression: string, sessionEncryption: string): void;
-        authenticateSession(identity: string, authentication: Authentication, instance: string): void;
-        sendFinishingSession(): void;
-        onSessionNegotiating(session: Session): void;
-        onSessionAuthenticating(session: Session): void;
-        onSessionEstablished(session: Session): void;
-        onSessionFinished(session: Session): void;
-        onSessionFailed(session: Session): void;
-    }
-
-    class ClientChannelExtensions {
-        static establishSession(clientChannel: ClientChannel, compression: string, encryption: string, identity: string, authentication: Authentication, instance: string, callback: IEstablishSessionListener): void;
-    }
-
-    interface Transport extends ITransportStateListener {
-        send(envelope: Envelope): void;
-        onEnvelope: (envelope: Envelope) => void;
-        open(uri: string): void;
-        close(): void;
-        getSupportedCompression(): string[];
-        setCompression(compression: string): void;
-        compression: string;
-        getSupportedEncryption(): string[];
-        setEncryption(encryption: string): void;
-        encryption: string;
-    }
-    interface ITransportEnvelopeListener {
-        (envelope: Envelope): void;
-    }
-    interface ITransportStateListener {
-        onOpen: () => void;
-        onClose: () => void;
-        onError: (error: Error) => void;
-    }
-
-    class WebSocketTransport implements Transport {
-        webSocket: WebSocket;
-        constructor(traceEnabled?: boolean);
-        send(envelope: Envelope): void;
-        onEnvelope(envelope: Envelope): void;
-        open(uri: string): void;
-        close(): void;
-        getSupportedCompression(): string[];
-        setCompression(compression: string): void;
-        compression: string;
-        getSupportedEncryption(): string[];
-        setEncryption(encryption: string): void;
-        encryption: string;
-        onOpen(): void;
-        onClose(): void;
-        onError(error: Error): void;
-    }
-}
-
 declare module "lime-js" {
-  export = Lime;
+
+  // Lime.Envelope
+  interface Envelope {
+    id?: string;
+    from?: string;
+    to?: string;
+    pp?: string;
+    metadata?: any;
+  }
+  export const Envelope: {
+    isMessage: (envelope: Envelope) => envelope is Message;
+    isNotification: (envelope: Envelope) => envelope is Notification;
+    isCommand: (envelope: Envelope) => envelope is Command;
+    isSession: (envelope: Envelope) => envelope is Session;
+  };
+  interface Reason {
+    code: number;
+    description?: string;
+  }
+  interface EnvelopeListener {
+    onEnvelope(envelope: Envelope): void
+  }
+
+  // Lime.Message
+  interface Message extends Envelope {
+    type: string;
+    content: any;
+  }
+  interface MessageListener {
+    onMessage(command: Message): void;
+  }
+
+  // Lime.Notification
+  interface Notification extends Envelope {
+    event: NotificationEvent;
+    reason?: Reason;
+  }
+  interface NotificationListener {
+    onNotification(command: Notification): void;
+  }
+  type NotificationEvent
+    = "accepted"
+    | "validated"
+    | "authorized"
+    | "dispatched"
+    | "received"
+    | "consumed"
+    ;
+
+  // Lime.Command
+  interface Command extends Envelope {
+    uri?: string;
+    type?: string;
+    resource?: any;
+    method: CommandMethod;
+    status?: CommandStatus;
+    reason?: Reason;
+  }
+  interface CommandListener {
+    onCommand(command: Command): void;
+  }
+  type CommandMethod
+    = "get"
+    | "set"
+    | "delete"
+    | "observe"
+    | "subscribe"
+    ;
+  type CommandStatus
+    = "success"
+    | "failure"
+    ;
+
+  // Lime.Session
+  interface Session extends Envelope {
+    state: SessionState;
+
+    encryptionOptions?: SessionEncryption[];
+    encryption?: SessionEncryption;
+
+    compressionOptions?: SessionCompression[];
+    compression?: SessionCompression;
+
+    scheme?: string;
+    authentication?: any;
+
+    reason?: Reason;
+  }
+  interface SessionListener {
+    onSession(command: Session): void;
+  }
+  type SessionState
+    = "new"
+    | "negotiating"
+    | "authenticating"
+    | "established"
+    | "finishing"
+    | "finished"
+    | "failed"
+    ;
+  type SessionEncryption
+    = "none"
+    | "tls"
+    ;
+  type SessionCompression
+    = "none"
+    | "gzip"
+    ;
+
+  // Lime.Security.Authentication
+  class Authentication {
+    scheme: AuthenticationScheme;
+  }
+  class GuestAuthentication extends Authentication {}
+  class TransportAuthentication extends Authentication {}
+  class PlainAuthentication extends Authentication {
+    password: string;
+  }
+  class KeyAuthentication extends Authentication {
+    key: string;
+  }
+  type AuthenticationScheme
+    = "guest"
+    | "plain"
+    | "transport"
+    | "key"
+    ;
+
+  // Lime.Client.Channel
+  interface MessageChannel extends MessageListener {
+    sendMessage(message: Message): void;
+  }
+  interface CommandChannel extends CommandListener {
+    sendCommand(command: Command): void;
+  }
+  interface NotificationChannel extends NotificationListener {
+    sendNotification(notification: Notification): void;
+  }
+  interface SessionChannel extends SessionListener {
+    sendSession(session: Session): void;
+  }
+  abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
+    transport: Transport;
+    remoteNode: string;
+    localNode: string;
+    sessionId: string;
+    state: SessionState;
+
+    constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean);
+
+    sendMessage(message: Message): void;
+    abstract onMessage(message: Message): void;
+
+    sendCommand(command: Command): void;
+    abstract onCommand(message: Command): void;
+
+    sendNotification(notification: Notification): void;
+    abstract onNotification(message: Notification): void;
+
+    sendSession(session: Session): void;
+    abstract onSession(message: Session): void;
+  }
+  // Lime.Client.ClientChannel
+  class ClientChannel extends Channel {
+    constructor(transport: Transport, autoReplyPings?: boolean, autoNotifyReceipt?: boolean);
+    establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string, callback: (error: Error, session: Session) => void): void;
+
+    startNewSession(): void;
+    negotiateSession(sessionCompression: SessionCompression, sessionEncryption: SessionEncryption): void;
+    authenticateSession(identity: string, authentication: Authentication, instance: string): void;
+    sendFinishingSession(): void;
+
+    onSessionNegotiating(session: Session): void;
+    onSessionAuthenticating(session: Session): void;
+    onSessionEstablished(session: Session): void;
+    onSessionFinished(session: Session): void;
+    onSessionFailed(session: Session): void;
+
+    onMessage(message: Message): void;
+    onCommand(message: Command): void;
+    onNotification(message: Notification): void;
+    onSession(message: Session): void;
+  }
+
+  // Lime.Network.Transport
+  interface Transport extends EnvelopeListener {
+    open(uri: string): void;
+    close(): void;
+
+    send(envelope: Envelope): void;
+
+    getSupportedCompression(): SessionCompression[];
+    setCompression(compression: SessionCompression): void;
+    compression: SessionCompression;
+
+    getSupportedEncryption(): SessionEncryption[];
+    setEncryption(encryption: SessionEncryption): void;
+    encryption: SessionEncryption;
+  }
+
+  class WebSocketTransport implements Transport {
+    webSocket: WebSocket;
+
+    constructor(traceEnabled?: boolean);
+
+    send(envelope: Envelope): void;
+    onEnvelope(envelope: Envelope): void;
+
+    open(uri: string): void;
+    close(): void;
+
+    getSupportedCompression(): SessionCompression[];
+    setCompression(compression: SessionCompression): void;
+    compression: SessionCompression;
+
+    getSupportedEncryption(): SessionEncryption[];
+    setEncryption(encryption: SessionEncryption): void;
+    encryption: SessionEncryption;
+
+    onOpen(): void;
+    onClose(): void;
+    onError(error: Error);
+  }
 }
