@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/takenet/lime-js#readme",
   "devDependencies": {
-    "ts-loader": "^0.7.2",
-    "typescript": "^1.7.5",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.9"
   }
 }
