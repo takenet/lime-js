@@ -1,7 +1,7 @@
-import {Envelope, IEnvelopeListener} from "../Envelope";
+import {Envelope, EnvelopeListener} from "../Envelope";
 import {SessionCompression, SessionEncryption} from "../Session";
 
-export interface Transport extends IEnvelopeListener {
+export interface Transport extends EnvelopeListener {
   open(uri: string): void;
   close(): void;
 

@@ -1,6 +1,6 @@
-import {IEnvelope, Reason} from "./Envelope";
+import {Envelope, Reason} from "./Envelope";
 
-export interface Command extends IEnvelope {
+export interface Command extends Envelope {
   uri?: string;
   type?: string;
   resource?: any;
@@ -9,7 +9,7 @@ export interface Command extends IEnvelope {
   reason?: Reason;
 }
 
-export interface ICommandListener {
+export interface CommandListener {
   onCommand(command: Command): void;
 }
 

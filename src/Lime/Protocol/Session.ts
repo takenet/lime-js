@@ -1,6 +1,6 @@
-import {IEnvelope, Reason} from "./Envelope";
+import {Envelope, Reason} from "./Envelope";
 
-export interface Session extends IEnvelope {
+export interface Session extends Envelope {
   state: SessionState;
 
   encryptionOptions?: SessionEncryption[];
@@ -15,7 +15,7 @@ export interface Session extends IEnvelope {
   reason?: Reason;
 }
 
-export interface ISessionListener {
+export interface SessionListener {
   onSession(command: Session): void;
 }
 

@@ -1,12 +1,27 @@
 import {Envelope} from "../Envelope";
-import {Message} from "../Message";
-import {Command, CommandMethod, CommandStatus} from "../Command";
-import {Notification, NotificationEvent} from "../Notification";
-import {Session, SessionState} from "../Session";
+import {Message, MessageListener} from "../Message";
+import {Command, CommandListener, CommandMethod, CommandStatus} from "../Command";
+import {Notification, NotificationListener, NotificationEvent} from "../Notification";
+import {Session, SessionListener, SessionState} from "../Session";
 import {Transport} from "../Network/Transport";
-import {IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel} from "./IChannel";
 
-export abstract class Channel implements IMessageChannel, ICommandChannel, INotificationChannel, ISessionChannel {
+export interface MessageChannel extends MessageListener {
+  sendMessage(message: Message): void;
+}
+
+export interface CommandChannel extends CommandListener {
+  sendCommand(command: Command): void;
+}
+
+export interface NotificationChannel extends NotificationListener {
+  sendNotification(notification: Notification): void;
+}
+
+export interface SessionChannel extends SessionListener {
+  sendSession(session: Session): void;
+}
+
+export abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;

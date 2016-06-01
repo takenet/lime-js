@@ -3,20 +3,13 @@ import {Notification} from './Notification';
 import {Command} from './Command';
 import {Session} from './Session';
 
-export interface IEnvelope {
+export interface Envelope {
   id?: string;
   from?: string;
   to?: string;
   pp?: string;
   metadata?: any;
 }
-
-export type Envelope
-  = Message
-  | Notification
-  | Command
-  | Session
-  ;
 
 export const Envelope = {
   isMessage: (envelope: Envelope) => envelope.hasOwnProperty('content'),
@@ -30,6 +23,6 @@ export interface Reason {
   description?: string;
 }
 
-export interface IEnvelopeListener {
+export interface EnvelopeListener {
   onEnvelope(envelope: Envelope): void
 }
