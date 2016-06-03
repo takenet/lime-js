@@ -53,7 +53,7 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
       // Command
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
-        if (this.autoReplyPings && command.id && command.from &&
+        if (this.autoReplyPings && command.id &&
           command.uri === "/ping" && command.method === CommandMethod.GET)
         {
           const pingCommandResponse = {
@@ -61,7 +61,8 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
             to: command.from,
             method: CommandMethod.GET,
             status: CommandStatus.SUCCESS,
-            type: "application/vnd.lime.ping+json"
+            type: "application/vnd.lime.ping+json",
+            resource: {}
           }
           this.sendCommand(pingCommandResponse);
         }
