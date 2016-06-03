@@ -1,8 +1,8 @@
 {
   "name": "lime-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript LIME implementation",
-  "main": "lime.js",
+  "main": "dist/lime.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "watch": "./node_modules/.bin/webpack --watch",
