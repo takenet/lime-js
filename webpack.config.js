@@ -1,9 +1,14 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
-  entry: './src/Lime/Lime.ts',
+  entry: {
+    'lime': './src/Lime/Lime.ts',
+    'lime.min': './src/Lime/Lime.ts'
+  },
   output: {
-    filename: 'lime.js',
+    path: './dist',
+    filename: '[name].js',
     library: 'Lime',
     libraryTarget: 'this'
   },
@@ -18,6 +23,12 @@ module.exports = {
     loaders: [
       { test: /\.ts$/, exclude: /node_modules/, loader: 'ts-loader' }
     ]
-  }
+  },
 
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      include: /\.min\.js$/,
+      minimize: true
+    })
+  ]
 };

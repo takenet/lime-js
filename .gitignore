@@ -95,5 +95,4 @@ tmp/
 .DS_STORE
 **/.DS_STORE
 
-lime.js
-lime.js.map
+*.map
