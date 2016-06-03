@@ -1,9 +1,10 @@
 import {Envelope, EnvelopeListener} from "../Envelope";
 import {SessionCompression, SessionEncryption} from "../Session";
+import {Promise} from "es6-promise";
 
 export interface Transport extends EnvelopeListener {
-  open(uri: string): void;
-  close(): void;
+  open(uri: string): Promise<void>;
+  close(): Promise<void>;
 
   send(envelope: Envelope): void;
 

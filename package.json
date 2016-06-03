@@ -6,6 +6,7 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "watch": "./node_modules/.bin/webpack --watch",
+    "start": "npm run watch",
     "deploy": "npm publish"
   },
   "repository": {

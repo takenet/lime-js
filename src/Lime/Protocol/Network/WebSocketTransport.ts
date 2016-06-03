@@ -1,13 +1,76 @@
 import {Envelope} from "../Envelope";
 import {SessionCompression, SessionEncryption} from "../Session";
 import {Transport} from "./Transport";
+import {Promise} from "es6-promise";
 
 export class WebSocketTransport implements Transport {
+
   private traceEnabled: boolean;
   webSocket: WebSocket;
 
   constructor(traceEnabled: boolean = false) {
     this.traceEnabled = traceEnabled;
+  }
+
+  open(uri: string): Promise<void> {
+    this.webSocket = new WebSocket(uri, "lime");
+
+    if (uri.indexOf("wss://") > -1) {
+      this.encryption = SessionEncryption.TLS;
+    } else {
+      this.encryption = SessionEncryption.NONE;
+    }
+
+    this.compression = SessionCompression.NONE;
+
+    let promise = new Promise<void>((resolve, reject) => {
+      this.webSocket.onopen = () => {
+        resolve();
+        this.onOpen();
+      };
+      this.webSocket.onerror = (e) => {
+        let err = new Error(e.toString());
+        reject(err);
+        this.onError(err);
+      }
+    });
+
+    this.webSocket.onclose = this.onClose;
+    this.webSocket.onmessage = (e) => {
+      if (this.traceEnabled) {
+        console.debug(`WebSocket RECEIVE: ${e.data}`);
+      }
+      this.onEnvelope(<Envelope>JSON.parse(e.data));
+    }
+
+    return promise;
+  }
+
+  close(): Promise<void> {
+    this.ensureSocketOpen();
+
+    let promise = new Promise<void>((resolve, reject) => {
+      this.webSocket.onclose = () => {
+        resolve();
+        this.onClose();
+      };
+      this.webSocket.onerror = (e) => {
+        let err = new Error(e.toString());
+        reject(err);
+        this.onError(err);
+      }
+    });
+
+    this.webSocket.close();
+
+    return promise;
+  }
+
+  private ensureSocketOpen() {
+    if(this.webSocket == null ||
+      this.webSocket.readyState !== WebSocket.OPEN) {
+      throw "The connection is not open";
+    }
   }
 
   send(envelope: Envelope) {
@@ -20,44 +83,7 @@ export class WebSocketTransport implements Transport {
     }
   }
 
-  onEnvelope(envelope: Envelope) { }
-
-  open(uri: string) {
-    this.webSocket = new WebSocket(uri, "lime");
-
-    if (uri.indexOf("wss://") > -1) {
-      this.encryption = SessionEncryption.TLS;
-    } else {
-      this.encryption = SessionEncryption.NONE;
-    }
-
-    this.compression = SessionCompression.NONE;
-
-    this.webSocket.onmessage = (e) => {
-      if (this.traceEnabled) {
-        console.debug(`WebSocket RECEIVE: ${e.data}`);
-      }
-      this.onEnvelope(<Envelope>JSON.parse(e.data));
-    }
-
-    this.webSocket.onopen = this.onOpen;
-    this.webSocket.onclose = this.onClose;
-    this.webSocket.onerror = (e) => {
-      this.onError(new Error(e.toString()));
-    }
-  }
-
-  close() {
-    this.ensureSocketOpen();
-    this.webSocket.close();
-  }
-
-  private ensureSocketOpen() {
-    if(this.webSocket == null ||
-      this.webSocket.readyState !== WebSocket.OPEN) {
-      throw "The connection is not open";
-    }
-  }
+  onEnvelope(envelope: Envelope) {}
 
   getSupportedCompression(): SessionCompression[] {
     throw new Error("Compression change is not supported");
