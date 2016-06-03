@@ -5,7 +5,7 @@ import {Session, SessionCompression, SessionEncryption, SessionState} from "../S
 import {Channel} from "./Channel";
 import {Transport} from "../Network/Transport";
 import {Authentication} from "../Security/Authentication";
-import {Promise} from "es6-promise";
+import * as Promise from "bluebird";
 
 export class ClientChannel extends Channel {
 
@@ -79,7 +79,7 @@ export class ClientChannel extends Channel {
       throw `Cannot start a session in the '${this.state}' state.`;
     }
 
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<Session>((resolve, reject) => {
       this.onSessionFailed = reject;
       this.onSessionNegotiating = this.onSessionAuthenticating = resolve;
     });
@@ -97,7 +97,7 @@ export class ClientChannel extends Channel {
       throw `Cannot negotiate a session in the '${this.state}' state.`;
     }
 
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<Session>((resolve, reject) => {
       this.onSessionFailed = reject;
       this.onSessionAuthenticating = resolve;
     });
@@ -118,7 +118,7 @@ export class ClientChannel extends Channel {
       throw `Cannot authenticate a session in the '${this.state}' state.`;
     }
 
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<Session>((resolve, reject) => {
       this.onSessionFailed = reject;
       this.onSessionEstablished = resolve;
     });
@@ -140,7 +140,7 @@ export class ClientChannel extends Channel {
       throw `Cannot finish a session in the '${this.state}' state.`;
     }
 
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<Session>((resolve, reject) => {
       this.onSessionFailed = reject;
       this.onSessionFinished = resolve;
     });

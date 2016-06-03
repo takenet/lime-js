@@ -1,6 +1,6 @@
 {
   "name": "lime-js",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "JavaScript LIME implementation",
   "main": "lime.js",
   "scripts": {
@@ -33,6 +33,6 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
-    "es6-promise": "^3.2.1"
+    "bluebird": "^3.4.0"
   }
 }

@@ -1,7 +1,7 @@
 import {Envelope} from "../Envelope";
 import {SessionCompression, SessionEncryption} from "../Session";
 import {Transport} from "./Transport";
-import {Promise} from "es6-promise";
+import * as Promise from "bluebird";
 
 export class WebSocketTransport implements Transport {
 
@@ -25,7 +25,7 @@ export class WebSocketTransport implements Transport {
 
     let promise = new Promise<void>((resolve, reject) => {
       this.webSocket.onopen = () => {
-        resolve();
+        resolve(null);
         this.onOpen();
       };
       this.webSocket.onerror = (e) => {
@@ -51,7 +51,7 @@ export class WebSocketTransport implements Transport {
 
     let promise = new Promise<void>((resolve, reject) => {
       this.webSocket.onclose = () => {
-        resolve();
+        resolve(null);
         this.onClose();
       };
       this.webSocket.onerror = (e) => {

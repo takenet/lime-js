@@ -42,7 +42,7 @@
       utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
     };
 
-    transport.onClose = function() {
+    transport.onClose = function(e) {
       connectButton.disabled = false;
       disconnectButton.disabled = true;
       utils.logMessage("Transport is closed");
@@ -62,17 +62,17 @@
           authentication = new Lime.GuestAuthentication();
         }
 
-        clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance)
-          .then(function(session) {
-            utils.logMessage("Session id: " + session.id + " - State: " + session.state);
-            if (session.state === Lime.SessionState.established) {
-              connectButton.disabled = true;
-              disconnectButton.disabled = false;
-            }
-          })
-          .catch(function(err) {
-            utils.logMessage("An error occurred: " + err);
-          });
+        return clientChannel.establishSession(Lime.SessionEncryption.NONE, Lime.SessionCompression.NONE, identity, authentication, instance);
+      })
+      .then(function(session) {
+        utils.logMessage("Session id: " + session.id + " - State: " + session.state);
+        if (session.state === Lime.SessionState.established) {
+          connectButton.disabled = true;
+          disconnectButton.disabled = false;
+        }
+      })
+      .catch(function(err) {
+        utils.logMessage("An error occurred: " + err);
       });
   }
 
@@ -91,7 +91,7 @@
   window.setPresence = function(available) {
     var presenceCommand = {
       id: utils.newGuid(),
-      method: Lime.CommandMethod.set,
+      method: Lime.CommandMethod.SET,
       uri: "/presence",
       type: "application/vnd.lime.presence+json",
       resource: {
@@ -104,7 +104,7 @@
   window.setReceipts = function() {
     var presenceCommand = {
       id: utils.newGuid(),
-      method: Lime.CommandMethod.set,
+      method: Lime.CommandMethod.SET,
       uri: "/receipt",
       type: "application/vnd.lime.receipt+json",
       resource: {

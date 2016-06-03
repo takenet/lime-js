@@ -1,6 +1,6 @@
 import {Envelope, EnvelopeListener} from "../Envelope";
 import {SessionCompression, SessionEncryption} from "../Session";
-import {Promise} from "es6-promise";
+import * as Promise from "bluebird";
 
 export interface Transport extends EnvelopeListener {
   open(uri: string): Promise<void>;

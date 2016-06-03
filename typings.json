@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "es6-promise": "github:DefinitelyTyped/DefinitelyTyped/es6-promise/es6-promise.d.ts#71b4d6f6087f49891a01c937d2a86eee6f6c9b3a"
+    "bluebird": "registry:npm/bluebird#3.3.4+20160531224558"
   }
 }
