@@ -13,12 +13,12 @@ declare module "lime-js" {
     pp?: string;
     metadata?: any;
   }
-  export const Envelope: {
+  const Envelope: {
     isMessage: (envelope: Envelope) => envelope is Message;
     isNotification: (envelope: Envelope) => envelope is Notification;
     isCommand: (envelope: Envelope) => envelope is Command;
     isSession: (envelope: Envelope) => envelope is Session;
-  };
+  }
   interface Reason {
     code: number;
     description?: string;
@@ -44,6 +44,14 @@ declare module "lime-js" {
   interface NotificationListener {
     onNotification(command: Notification): void;
   }
+  const NotificationEvent: {
+    ACCEPTED: NotificationEvent;
+    VALIDATED: NotificationEvent;
+    AUTHORIZED: NotificationEvent;
+    DISPATCHED: NotificationEvent;
+    RECEIVED: NotificationEvent;
+    CONSUMED: NotificationEvent;
+  }
   type NotificationEvent
     = "accepted"
     | "validated"
@@ -65,6 +73,13 @@ declare module "lime-js" {
   interface CommandListener {
     onCommand(command: Command): void;
   }
+  const CommandMethod: {
+    GET: CommandMethod;
+    SET: CommandMethod;
+    DELETE: CommandMethod;
+    OBSERVE: CommandMethod;
+    SUBSCRIBE: CommandMethod;
+  }
   type CommandMethod
     = "get"
     | "set"
@@ -72,6 +87,10 @@ declare module "lime-js" {
     | "observe"
     | "subscribe"
     ;
+  const CommandStatus: {
+    SUCCESS: CommandStatus;
+    FAILURE: CommandStatus;
+  }
   type CommandStatus
     = "success"
     | "failure"
@@ -95,6 +114,15 @@ declare module "lime-js" {
   interface SessionListener {
     onSession(command: Session): void;
   }
+  const SessionState: {
+    NEW: SessionState;
+    NEGOTIATING: SessionState;
+    AUTHENTICATING: SessionState;
+    ESTABLISHED: SessionState;
+    FINISHING: SessionState;
+    FINISHED: SessionState;
+    FAILED: SessionState;
+  }
   type SessionState
     = "new"
     | "negotiating"
@@ -104,10 +132,18 @@ declare module "lime-js" {
     | "finished"
     | "failed"
     ;
+  const SessionEncryption: {
+    NONE: SessionEncryption;
+    TLS: SessionEncryption;
+  }
   type SessionEncryption
     = "none"
     | "tls"
     ;
+  const SessionCompression: {
+    NONE: SessionCompression;
+    GZIP: SessionCompression;
+  }
   type SessionCompression
     = "none"
     | "gzip"
@@ -124,6 +160,12 @@ declare module "lime-js" {
   }
   class KeyAuthentication extends Authentication {
     key: string;
+  }
+  const AuthenticationScheme: {
+    GUEST: AuthenticationScheme;
+    PLAIN: AuthenticationScheme;
+    TRANSPORT: AuthenticationScheme;
+    KEY: AuthenticationScheme;
   }
   type AuthenticationScheme
     = "guest"
