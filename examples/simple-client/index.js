@@ -42,7 +42,7 @@
       utils.logMessage("Command received - From: "  + c.from + " - To: " + c.to + " - Method: " + c.method + " - URI: " + c.uri + " - Resource: " + c.resource + " - Status: " + c.status + " - Reason: " + c.reason);
     };
 
-    transport.onClose = function(e) {
+    transport.onClose = function() {
       connectButton.disabled = false;
       disconnectButton.disabled = true;
       utils.logMessage("Transport is closed");

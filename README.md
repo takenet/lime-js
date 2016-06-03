@@ -20,22 +20,17 @@ npm run watch
 
 ## TODO
 - Review and refactor:
-    * [X] Envelopes
-    * [X] Authentication
-    * [X] Channel
-    * [X] ClientChannel
-    * [X] Transport
-
+    * [x] Envelopes
+    * [x] Authentication
+    * [x] Channel
+    * [x] ClientChannel
+    * [x] Transport
 
 - [ ] write proper README.md
 - [ ] write proper code documentation
 - [ ] Implement strict LIME protocol Envelope specification (mandatory fields)
-- [ ] Try a functional approach
-- [ ] Make the library as easy as possible to use for a native JS programmer
 
-
-- [X] Find out how/if Promises could be useful
-
+- [x] Use Promises
 
 - [ ] AJAX transport
 - [ ] XHR-Streaming transport
