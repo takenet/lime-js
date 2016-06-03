@@ -10,10 +10,18 @@ export class TransportAuthentication extends Authentication {
 export class PlainAuthentication extends Authentication {
   scheme = AuthenticationScheme.PLAIN;
   password: string;
+  constructor(password: string) {
+    super();
+    this.password = password;
+  }
 }
 export class KeyAuthentication extends Authentication {
   scheme = AuthenticationScheme.KEY;
   key: string;
+  constructor(key: string) {
+    super();
+    this.key = key;
+  }
 }
 
 export const AuthenticationScheme = {
