@@ -5,8 +5,10 @@ node_js:
 sudo: false
 before_script:
   - npm install
+  - npm i -g typings
+  - typings install
 script: npm run build
 deploy:
   provider: npm
-  email: ridermansb@gmail.com
+  email: arthur.xavierx@gmail.com
   api_key: $NPM_AUTH_TOKEN
