@@ -15,7 +15,7 @@ However, if you're using vanilla JavaScript, you can install the package via npm
 
 Or you can also use the script served by [npmcdn](https://npmcdn.com):
 ```html
-<script src="https://npmcdn.com/lime-js" type="text/javascript"></script>
+<script src="https://npmcdn.com/lime-js@latest" type="text/javascript"></script>
 ```
 
 ## How to build
