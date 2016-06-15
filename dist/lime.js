@@ -1,5 +1,14 @@
-this["Lime"] =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["Lime"] = factory();
+	else
+		root["Lime"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -181,18 +190,20 @@ this["Lime"] =
 	exports.TransportAuthentication = TransportAuthentication;
 	var PlainAuthentication = (function (_super) {
 	    __extends(PlainAuthentication, _super);
-	    function PlainAuthentication() {
-	        _super.apply(this, arguments);
+	    function PlainAuthentication(password) {
+	        _super.call(this);
 	        this.scheme = exports.AuthenticationScheme.PLAIN;
+	        this.password = password;
 	    }
 	    return PlainAuthentication;
 	}(Authentication));
 	exports.PlainAuthentication = PlainAuthentication;
 	var KeyAuthentication = (function (_super) {
 	    __extends(KeyAuthentication, _super);
-	    function KeyAuthentication() {
-	        _super.apply(this, arguments);
+	    function KeyAuthentication(key) {
+	        _super.call(this);
 	        this.scheme = exports.AuthenticationScheme.KEY;
+	        this.key = key;
 	    }
 	    return KeyAuthentication;
 	}(Authentication));
@@ -6201,5 +6212,7 @@ this["Lime"] =
 
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
 //# sourceMappingURL=lime.js.map
