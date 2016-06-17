@@ -15,8 +15,14 @@ However, if you're using vanilla JavaScript, you can install the package via npm
 
 Or you can also use the script served by [npmcdn](https://npmcdn.com):
 ```html
-<script src="https://npmcdn.com/lime-js@latest" type="text/javascript"></script>
+<script src="https://npmcdn.com/lime-js" type="text/javascript"></script>
 ```
+
+### Transports
+Lime itself is a protocol specification. That means this package is meant to be used along with other packages to provide true functionality. It is meant to be used as an interface.
+
+There are a few official packages for Lime transport classes publicly available on NPM and on our [Github](https://github.com/takenet), but we plan on building more transport classes for node.js and the browser:
+- [WebSocketTransport](https://github.com/takenet/lime-transport-websocket)
 
 ## How to build
 First you need to download and install the npm packages with
@@ -32,10 +38,3 @@ or
 ```
 npm run watch
 ```
-
-## TODO
-- [ ] Write proper source code documentation
-- [ ] Implement strict LIME protocol Envelope specification (mandatory fields)
-
-- [ ] AJAX transport
-- [ ] XHR-Streaming transport
