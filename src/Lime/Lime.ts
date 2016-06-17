@@ -47,4 +47,3 @@ export { ClientChannel } from "./Protocol/Client/ClientChannel";
 
 // Lime.Network
 export { Transport } from "./Protocol/Network/Transport";
-export { WebSocketTransport } from "./Protocol/Network/WebSocketTransport";

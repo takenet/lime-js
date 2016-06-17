@@ -245,28 +245,4 @@ declare module "lime-js" {
     setEncryption(encryption: SessionEncryption): void;
     encryption: SessionEncryption;
   }
-
-  class WebSocketTransport implements Transport {
-    webSocket: WebSocket;
-
-    constructor(traceEnabled?: boolean);
-
-    send(envelope: Envelope): void;
-    onEnvelope(envelope: Envelope): void;
-
-    open(uri: string): void;
-    close(): void;
-
-    getSupportedCompression(): SessionCompression[];
-    setCompression(compression: SessionCompression): void;
-    compression: SessionCompression;
-
-    getSupportedEncryption(): SessionEncryption[];
-    setEncryption(encryption: SessionEncryption): void;
-    encryption: SessionEncryption;
-
-    onOpen(): void;
-    onClose(): void;
-    onError(error: Error);
-  }
 }
