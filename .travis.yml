@@ -11,6 +11,9 @@ before_install:
   - npm i -g npm@^2.0.0
 before_script:
   - npm prune
+  - npm isntall
+  - npm i -g typings
+  - typings install
 script:
   - npm run build
 after_success:
