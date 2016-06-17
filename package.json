@@ -1,6 +1,5 @@
 {
   "name": "lime-js",
-  "version": "2.0.1",
   "description": "JavaScript LIME implementation",
   "main": "dist/lime.js",
   "files": [
@@ -8,14 +7,16 @@
     "dist/lime.min.js"
   ],
   "scripts": {
+    "commit": "./node_modules/.bin/git-cz",
     "build": "./node_modules/.bin/webpack",
     "watch": "./node_modules/.bin/webpack --watch",
     "start": "npm run watch",
-    "deploy": "npm publish"
+    "deploy": "npm run postversion",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/takenet/lime-js.git"
+    "url": "https://github.com/takenet/lime-js.git"
   },
   "keywords": [
     "LIME",
@@ -32,11 +33,19 @@
   },
   "homepage": "https://github.com/takenet/lime-js#readme",
   "devDependencies": {
+    "commitizen": "^2.8.2",
+    "cz-conventional-changelog": "^1.1.6",
+    "semantic-release": "^4.3.5",
     "ts-loader": "^0.8.2",
     "typescript": "^1.8.10",
     "webpack": "^1.12.9"
   },
   "dependencies": {
     "bluebird": "^3.4.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
