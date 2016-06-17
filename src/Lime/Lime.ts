@@ -1,4 +1,7 @@
 // Lime
+export { Guid } from "./Guid";
+
+// Lime.Protocol
 export
   { Envelope
   , Reason
@@ -26,7 +29,7 @@ export
   , SessionCompression
   } from "./Protocol/Session";
 
-// Lime.Security
+// Lime.Protocol.Security
 export
   { Authentication
   , GuestAuthentication
@@ -35,7 +38,7 @@ export
   , KeyAuthentication
   } from "./Protocol/Security/Authentication";
 
-// Lime.Channel
+// Lime.Protocol.Channel
 export
   { Channel
   , MessageChannel
@@ -45,15 +48,5 @@ export
   } from "./Protocol/Client/Channel";
 export { ClientChannel } from "./Protocol/Client/ClientChannel";
 
-// Lime.Network
+// Lime.Protocol.Network
 export { Transport } from "./Protocol/Network/Transport";
-
-export function Guid() {
-  let d = new Date().getTime();
-  let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    var r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-  });
-  return uuid;
-}
