@@ -47,12 +47,6 @@ export class ClientChannel extends Channel {
     if (session.state === SessionState.ESTABLISHED) {
       this.localNode = session.to;
       this.remoteNode = session.from;
-    } else if (session.state === SessionState.FINISHED || session.state === SessionState.FAILED) {
-      try {
-        this.transport.close();
-      } catch (e) {
-        console.error(e);
-      }
     }
 
     switch (session.state) {
@@ -66,10 +60,10 @@ export class ClientChannel extends Channel {
         this.onSessionEstablished(session);
         break;
       case SessionState.FINISHED:
-        this.onSessionFinished(session);
+        this.transport.close().then(() => this.onSessionFinished(session));
         break;
       case SessionState.FAILED:
-        this.onSessionFailed(session);
+        this.transport.close().then(() => this.onSessionFailed(session));
       default:
     }
   }
