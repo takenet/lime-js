@@ -15,7 +15,7 @@ export class ClientChannel extends Channel {
 
   establishSession(compression: SessionCompression, encryption: SessionEncryption, identity: string, authentication: Authentication, instance: string): Promise<Session> {
     if (this.state !== SessionState.NEW) {
-      throw `Cannot establish a session in the '${this.state}' state.`;
+      throw new Error(`Cannot establish a session in the '${this.state}' state.`);
     }
 
     return this.startNewSession()
@@ -70,7 +70,7 @@ export class ClientChannel extends Channel {
 
   startNewSession(): Promise<Session> {
     if (this.state !== SessionState.NEW) {
-      throw `Cannot start a session in the '${this.state}' state.`;
+      throw new Error(`Cannot start a session in the '${this.state}' state.`);
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
@@ -88,7 +88,7 @@ export class ClientChannel extends Channel {
 
   negotiateSession(sessionCompression: SessionCompression, sessionEncryption: SessionEncryption): Promise<Session> {
     if (this.state !== SessionState.NEGOTIATING) {
-      throw `Cannot negotiate a session in the '${this.state}' state.`;
+      throw new Error(`Cannot negotiate a session in the '${this.state}' state.`);
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
@@ -109,7 +109,7 @@ export class ClientChannel extends Channel {
 
   authenticateSession(identity: string, authentication: Authentication, instance: string): Promise<Session> {
     if (this.state !== SessionState.AUTHENTICATING) {
-      throw `Cannot authenticate a session in the '${this.state}' state.`;
+      throw new Error(`Cannot authenticate a session in the '${this.state}' state.`);
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
@@ -131,7 +131,7 @@ export class ClientChannel extends Channel {
 
   sendFinishingSession(): Promise<Session> {
     if (this.state !== SessionState.ESTABLISHED) {
-      throw `Cannot finish a session in the '${this.state}' state.`;
+      throw new Error(`Cannot finish a session in the '${this.state}' state.`);
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
