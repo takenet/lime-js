@@ -10,6 +10,7 @@ export interface NotificationListener {
 }
 
 export const NotificationEvent = {
+  FAILED: <NotificationEvent> "failed",
   ACCEPTED: <NotificationEvent> "accepted",
   VALIDATED: <NotificationEvent> "validated",
   AUTHORIZED: <NotificationEvent> "authorized",
@@ -18,7 +19,8 @@ export const NotificationEvent = {
   CONSUMED: <NotificationEvent> "consumed"
 };
 export type NotificationEvent
-  = "accepted"
+  = "failed"
+  | "accepted"
   | "validated"
   | "authorized"
   | "dispatched"
