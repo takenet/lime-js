@@ -1,4 +1,5 @@
-import {Envelope, Reason} from "./Envelope";
+import {Envelope} from "./Envelope";
+import {Reason} from "./Reason";
 
 export interface Command extends Envelope {
   uri?: string;

@@ -4,7 +4,6 @@ export { Guid } from "./Guid";
 // Lime.Protocol
 export
   { Envelope
-  , Reason
   , EnvelopeListener
   } from "./Protocol/Envelope";
 export
@@ -28,6 +27,10 @@ export
   , SessionEncryption
   , SessionCompression
   } from "./Protocol/Session";
+export
+  { Reason
+  , ReasonCodes
+  } from "./Protocol/Reason";
 
 // Lime.Protocol.Security
 export

@@ -18,11 +18,6 @@ export const Envelope = {
   isSession: (envelope: Envelope) => envelope.hasOwnProperty('state')
 };
 
-export interface Reason {
-  code: number;
-  description?: string;
-}
-
 export interface EnvelopeListener {
   onEnvelope(envelope: Envelope): void
 }
