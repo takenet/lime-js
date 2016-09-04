@@ -43,9 +43,9 @@ However, if you're using vanilla JavaScript, you can install the package via npm
 <script src="./node_modules/lime-js/dist/lime.js" type="text/javascript"></script>
 ```
 
-Or you can also use the script served by [npmcdn](https://npmcdn.com):
+Or you can also use the script served by [unpkg](https://unpkg.com):
 ```html
-<script src="https://npmcdn.com/lime-js" type="text/javascript"></script>
+<script src="https://unpkg.com/lime-js" type="text/javascript"></script>
 ```
 
 ### Starting a connection
