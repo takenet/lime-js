@@ -54,7 +54,9 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
         if (this.autoReplyPings && command.id &&
-          command.uri === "/ping" && command.method === CommandMethod.GET)
+          command.uri === "/ping" && 
+          command.method === CommandMethod.GET &&
+          this.isForMe(command))
         {
           const pingCommandResponse = {
             id: command.id,
@@ -116,7 +118,7 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
     if (this.autoNotifyReceipt && 
         message.id && 
         message.from && 
-        (message.to == null || message.to === this.localNode || this.localNode.substring(0, message.to.length) === message.to)) {
+        this.isForMe(message)) {
       const notification: Notification = {
         id: message.id,
         to: message.from,
@@ -124,5 +126,11 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
       };
       this.sendNotification(notification);
     }
+  }
+
+  private isForMe(envelope: Envelope): boolean {
+    return envelope.to === null || 
+          envelope.to === this.localNode || 
+          this.localNode.substring(0, envelope.to.length) === envelope.to;
   }
 }
