@@ -113,7 +113,10 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
   }
 
   private notifyMessage(message: Message) {
-    if (this.autoNotifyReceipt && message.id && message.from) {
+    if (this.autoNotifyReceipt && 
+        message.id && 
+        message.from && 
+        (message.to == null || message.to === this.localNode || this.localNode.substring(0, message.to.length) === message.to)) {
       const notification: Notification = {
         id: message.id,
         to: message.from,
