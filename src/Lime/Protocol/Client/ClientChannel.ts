@@ -33,7 +33,11 @@ export class ClientChannel extends Channel {
         }
         return session;
       })
-      .then((session) => this.authenticateSession(identity, authentication, instance));
+      .then((session) => this.authenticateSession(identity, authentication, instance))
+      .then((session) => {
+        this._resetSessionListeners();
+        return session;
+      });
   }
 
   onMessage(message: Message) {}
@@ -156,6 +160,14 @@ export class ClientChannel extends Channel {
 
   onSessionFinished(session: Session) {}
   onSessionFailed(session: Session) {}
+
+  private _resetSessionListeners() {
+    this._onSessionNegotiating =
+      this._onSessionAuthenticating =
+      this._onSessionEstablished =
+      this._onSessionFinished =
+      this._onSessionFailed = () => {};
+  }
 
   private _onSessionNegotiating(session: Session) {}
   private _onSessionAuthenticating(session: Session) {}
