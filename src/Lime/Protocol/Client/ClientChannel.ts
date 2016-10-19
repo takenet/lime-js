@@ -51,19 +51,25 @@ export class ClientChannel extends Channel {
 
     switch (session.state) {
       case SessionState.NEGOTIATING:
-        this.onSessionNegotiating(session);
+        this._onSessionNegotiating(session);
         break;
       case SessionState.AUTHENTICATING:
-        this.onSessionAuthenticating(session);
+        this._onSessionAuthenticating(session);
         break;
       case SessionState.ESTABLISHED:
-        this.onSessionEstablished(session);
+        this._onSessionEstablished(session);
         break;
       case SessionState.FINISHED:
-        this.transport.close().then(() => this.onSessionFinished(session));
+        this.transport.close().then(() => {
+          this.onSessionFinished(session);
+          this._onSessionFinished(session);
+        });
         break;
       case SessionState.FAILED:
-        this.transport.close().then(() => this.onSessionFailed(session));
+        this.transport.close().then(() => {
+          this.onSessionFailed(session);
+          this._onSessionFailed(session);
+        });
       default:
     }
   }
@@ -74,8 +80,8 @@ export class ClientChannel extends Channel {
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
-      this.onSessionFailed = reject;
-      this.onSessionNegotiating = this.onSessionAuthenticating = resolve;
+      this._onSessionFailed = reject;
+      this._onSessionNegotiating = this._onSessionAuthenticating = resolve;
     });
 
     const session: Session = {
@@ -92,8 +98,8 @@ export class ClientChannel extends Channel {
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
-      this.onSessionFailed = reject;
-      this.onSessionAuthenticating = resolve;
+      this._onSessionFailed = reject;
+      this._onSessionAuthenticating = resolve;
     });
 
     const session: Session = {
@@ -113,8 +119,8 @@ export class ClientChannel extends Channel {
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
-      this.onSessionFailed = reject;
-      this.onSessionEstablished = resolve;
+      this._onSessionFailed = reject;
+      this._onSessionEstablished = resolve;
     });
 
     const session: Session = {
@@ -135,8 +141,8 @@ export class ClientChannel extends Channel {
     }
 
     let promise = new Promise<Session>((resolve, reject) => {
-      this.onSessionFailed = reject;
-      this.onSessionFinished = resolve;
+      this._onSessionFailed = reject;
+      this._onSessionFinished = resolve;
     });
 
     const session: Session = {
@@ -148,9 +154,12 @@ export class ClientChannel extends Channel {
     return promise;
   }
 
-  private onSessionNegotiating(session: Session) {}
-  private onSessionAuthenticating(session: Session) {}
-  private onSessionEstablished(session: Session) {}
-  private onSessionFinished(session: Session) {}
-  private onSessionFailed(session: Session) {}
+  onSessionFinished(session: Session) {}
+  onSessionFailed(session: Session) {}
+
+  private _onSessionNegotiating(session: Session) {}
+  private _onSessionAuthenticating(session: Session) {}
+  private _onSessionEstablished(session: Session) {}
+  private _onSessionFinished(session: Session) {}
+  private _onSessionFailed(session: Session) {}
 }
