@@ -1,4 +1,4 @@
-export function Guid() {
+export default function Guid() {
   let d = new Date().getTime();
   let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     var r = (d + Math.random() * 16) % 16 | 0;

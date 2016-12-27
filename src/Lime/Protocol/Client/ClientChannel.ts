@@ -1,13 +1,13 @@
-import {Message} from "../Message";
-import {Notification} from "../Notification";
-import {Command} from "../Command";
-import {Session, SessionCompression, SessionEncryption, SessionState} from "../Session";
-import {Channel} from "./Channel";
-import {Transport} from "../Network/Transport";
-import {Authentication} from "../Security/Authentication";
+import Message from "../Message";
+import Notification from "../Notification";
+import Command from "../Command";
+import Session, { SessionCompression, SessionEncryption, SessionState } from "../Session";
+import Channel from "./Channel";
+import Transport from "../Network/Transport";
+import Authentication from "../Security/Authentication";
 import * as Promise from "bluebird";
 
-export class ClientChannel extends Channel {
+export default class ClientChannel extends Channel {
 
   constructor(transport: Transport, autoReplyPings: boolean = true, autoNotifyReceipt: boolean = false) {
     super(transport, autoReplyPings, autoNotifyReceipt);

@@ -2,7 +2,7 @@
  * Represents a known reason for events occurred during the client-server
  * interactions.
  */
-export class Reason {
+export default class Reason {
   code: number;
   description: string;
 

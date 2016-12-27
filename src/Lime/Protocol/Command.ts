@@ -1,7 +1,7 @@
-import {Envelope} from "./Envelope";
-import {Reason} from "./Reason";
+import Envelope from "./Envelope";
+import Reason from "./Reason";
 
-export interface Command extends Envelope {
+interface Command extends Envelope {
   uri?: string;
   type?: string;
   resource?: any;
@@ -9,6 +9,7 @@ export interface Command extends Envelope {
   status?: CommandStatus;
   reason?: Reason;
 }
+export default Command;
 
 export interface CommandListener {
   onCommand(command: Command): void;

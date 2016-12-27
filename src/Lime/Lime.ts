@@ -1,40 +1,40 @@
 // Lime
-export { Guid } from "./Guid";
+export { default as Guid } from "./Guid";
 
 // Lime.Protocol
 export
-  { Envelope
+  { default as Envelope
   , EnvelopeListener
   } from "./Protocol/Envelope";
 export
-  { Message
+  { default as Message
   , MessageListener
   } from "./Protocol/Message";
 export
-  { Notification
+  { default as Notification
   , NotificationEvent
   , NotificationListener
   } from "./Protocol/Notification";
 export
-  { Command
+  { default as Command
   , CommandMethod
   , CommandStatus
   , CommandListener
   } from "./Protocol/Command";
 export
-  { Session
+  { default as Session
   , SessionState
   , SessionEncryption
   , SessionCompression
   } from "./Protocol/Session";
 export
-  { Reason
+  { default as Reason
   , ReasonCodes
   } from "./Protocol/Reason";
 
 // Lime.Protocol.Security
 export
-  { Authentication
+  { default as Authentication
   , GuestAuthentication
   , PlainAuthentication
   , TransportAuthentication
@@ -43,13 +43,13 @@ export
 
 // Lime.Protocol.Channel
 export
-  { Channel
+  { default as Channel
   , MessageChannel
   , CommandChannel
   , NotificationChannel
   , SessionChannel
   } from "./Protocol/Client/Channel";
-export { ClientChannel } from "./Protocol/Client/ClientChannel";
+export { default as ClientChannel } from "./Protocol/Client/ClientChannel";
 
 // Lime.Protocol.Network
-export { Transport } from "./Protocol/Network/Transport";
+export { default as Transport } from "./Protocol/Network/Transport";

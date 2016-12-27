@@ -1,4 +1,4 @@
-export class Authentication {
+export default class Authentication {
   scheme: AuthenticationScheme;
 }
 export class GuestAuthentication extends Authentication {

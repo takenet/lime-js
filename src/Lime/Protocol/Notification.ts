@@ -1,10 +1,11 @@
-import {Envelope} from "./Envelope";
-import {Reason} from "./Reason";
+import Envelope from "./Envelope";
+import Reason from "./Reason";
 
-export interface Notification extends Envelope {
+interface Notification extends Envelope {
   event: NotificationEvent;
   reason?: Reason;
 }
+export default Notification;
 
 export interface NotificationListener {
   onNotification(command: Notification): void;

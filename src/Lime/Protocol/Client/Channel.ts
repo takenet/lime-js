@@ -1,9 +1,9 @@
-import {Envelope} from "../Envelope";
-import {Message, MessageListener} from "../Message";
-import {Command, CommandListener, CommandMethod, CommandStatus} from "../Command";
-import {Notification, NotificationListener, NotificationEvent} from "../Notification";
-import {Session, SessionListener, SessionState} from "../Session";
-import {Transport} from "../Network/Transport";
+import Envelope from "../Envelope";
+import Message, { MessageListener } from "../Message";
+import Command, { CommandListener, CommandMethod, CommandStatus } from "../Command";
+import Notification, { NotificationListener, NotificationEvent } from "../Notification";
+import Session, { SessionListener, SessionState } from "../Session";
+import Transport from "../Network/Transport";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
@@ -21,7 +21,7 @@ export interface SessionChannel extends SessionListener {
   sendSession(session: Session): void;
 }
 
-export abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
+abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
@@ -54,7 +54,7 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
         if (this.autoReplyPings && command.id &&
-          command.uri === "/ping" && 
+          command.uri === "/ping" &&
           command.method === CommandMethod.GET &&
           this.isForMe(command))
         {
@@ -115,9 +115,9 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
   }
 
   private notifyMessage(message: Message) {
-    if (this.autoNotifyReceipt && 
-        message.id && 
-        message.from && 
+    if (this.autoNotifyReceipt &&
+        message.id &&
+        message.from &&
         this.isForMe(message)) {
       const notification: Notification = {
         id: message.id,
@@ -129,8 +129,10 @@ export abstract class Channel implements MessageChannel, CommandChannel, Notific
   }
 
   private isForMe(envelope: Envelope): boolean {
-    return !envelope.to || 
-          envelope.to === this.localNode || 
+    return !envelope.to ||
+          envelope.to === this.localNode ||
           this.localNode.substring(0, envelope.to.length) === envelope.to;
   }
 }
+
+export default Channel;

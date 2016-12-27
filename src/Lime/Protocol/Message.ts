@@ -1,9 +1,10 @@
-import {Envelope} from "./Envelope";
+import Envelope from "./Envelope";
 
-export interface Message extends Envelope {
+interface Message extends Envelope {
   type: string;
   content: any;
 }
+export default Message;
 
 export interface MessageListener {
   onMessage(command: Message): void;

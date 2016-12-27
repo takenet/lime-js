@@ -1,5 +1,6 @@
 {
   "name": "lime-js",
+  "version": "2.3.1",
   "description": "JavaScript LIME implementation",
   "main": "dist/lime.js",
   "files": [
