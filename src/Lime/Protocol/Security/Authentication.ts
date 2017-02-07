@@ -23,16 +23,28 @@ export class KeyAuthentication extends Authentication {
     this.key = key;
   }
 }
+export class ExternalAuthentication extends Authentication {
+  scheme = AuthenticationScheme.EXTERNAL;
+  token: string;
+  issuer: string;
+  constructor(token: string, issuer: string) {
+    super();
+    this.token = token;
+    this.issuer = issuer;
+  }
+}
 
 export const AuthenticationScheme = {
   GUEST: <AuthenticationScheme> "guest",
   PLAIN: <AuthenticationScheme> "plain",
   TRANSPORT: <AuthenticationScheme> "transport",
-  KEY: <AuthenticationScheme> "key"
+  KEY: <AuthenticationScheme> "key",
+  EXTERNAL: <AuthenticationScheme> "external",
 };
 export type AuthenticationScheme
   = "guest"
   | "plain"
   | "transport"
   | "key"
+  | "external"
   ;
