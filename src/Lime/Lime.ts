@@ -38,6 +38,7 @@ export
   , GuestAuthentication
   , PlainAuthentication
   , TransportAuthentication
+  , ExternalAuthentication
   , KeyAuthentication
   } from "./Protocol/Security/Authentication";
 
