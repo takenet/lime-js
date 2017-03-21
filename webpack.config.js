@@ -10,7 +10,8 @@ module.exports = {
     path: './dist',
     filename: '[name].js',
     library: 'Lime',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
 
   devtool: 'source-map',
