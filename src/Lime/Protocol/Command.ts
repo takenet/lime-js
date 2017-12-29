@@ -20,7 +20,9 @@ export const CommandMethod = {
   SET: <CommandMethod> "set",
   DELETE: <CommandMethod> "delete",
   OBSERVE: <CommandMethod> "observe",
-  SUBSCRIBE: <CommandMethod> "subscribe"
+  SUBSCRIBE: <CommandMethod> "subscribe",
+  UNSUBSCRIBE: <CommandMethod> "unsubscribe",
+  MERGE: <CommandMethod> "merge",
 }
 export type CommandMethod
   = "get"
@@ -28,6 +30,8 @@ export type CommandMethod
   | "delete"
   | "observe"
   | "subscribe"
+  | "unsubscribe"
+  | "merge"
   ;
 
 export const CommandStatus = {
