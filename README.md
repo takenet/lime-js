@@ -48,6 +48,21 @@ Or you can also use the script served by [npmcdn](https://npmcdn.com):
 <script src="https://npmcdn.com/lime-js" type="text/javascript"></script>
 ```
 
+You can also use **LIME types**, from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/lime-js). To use it, install types by running `npm install @types/lime-js -D`. After install, you can import types separately or all types using **Lime** namespace
+
+#### Example
+```typescript
+import { Message } from 'lime-js'
+```
+#### Or
+```typescript
+import * as Lime from 'lime-js'
+
+class MyClass {
+  messages: Lime.Message[]
+}
+```
+
 ### Starting a connection
 
 To start a connection with a server in a specific domain, the client can use **DNS queries** to check for a *lime* SRV entry and get the server address. This is not mandatory and the client can use static connection information, but its a good idea to rely on DNS since the protocol is domain based. In the code, the method `open` of the  `Transport` interface should be called passing the remote URI (in the server, the URI parameter can be null).
