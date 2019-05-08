@@ -54,3 +54,6 @@ export { default as ClientChannel } from "./Protocol/Client/ClientChannel";
 
 // Lime.Protocol.Network
 export { default as Transport } from "./Protocol/Network/Transport";
+
+// Lime.ContentTypes
+export { default as ContentTypes } from "./ContentTypes";
