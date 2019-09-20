@@ -8,6 +8,7 @@ interface Command extends Envelope {
   method: CommandMethod;
   status?: CommandStatus;
   reason?: Reason;
+  timeout?: boolean;
 }
 export default Command;
 

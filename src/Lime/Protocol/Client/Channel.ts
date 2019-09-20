@@ -4,6 +4,7 @@ import Command, { CommandListener, CommandMethod, CommandStatus } from "../Comma
 import Notification, { NotificationListener, NotificationEvent } from "../Notification";
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
+import * as Promise from "bluebird";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
@@ -21,16 +22,23 @@ export interface SessionChannel extends SessionListener {
   sendSession(session: Session): void;
 }
 
-abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
+export interface ProcessCommand extends CommandListener {
+  processCommand(command: Command): void;
+}
+
+abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, ProcessCommand {
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
+
+  commandTimeout = 6000;
 
   transport: Transport;
   remoteNode: string;
   localNode: string;
   sessionId: string;
   state: SessionState;
+  _commandResolves: {};
 
   constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
     this.autoReplyPings = autoReplyPings;
@@ -86,6 +94,35 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   }
   abstract onMessage(message: Message): void;
 
+  processCommand(command: Command, timeout = this.commandTimeout): Promise<Command> {
+    const commandPromise = Promise.race([
+      new Promise((resolve) => {
+        this._commandResolves[command.id] = c => {
+          if (!c.status) return
+
+          resolve(c)
+
+          delete this._commandResolves[command.id]
+        }
+      }),
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          if (!this._commandResolves[command.id]) return
+
+          delete this._commandResolves[command.id]
+          command.status = 'failure'
+          command.timeout = true
+
+          const cmd = JSON.stringify(command)
+          reject(new ClientError(cmd))
+        }, timeout)
+      })
+    ])
+
+    this.sendCommand(command)
+    return commandPromise
+  }
+
   sendCommand(command: Command) {
     if (this.state !== SessionState.ESTABLISHED) {
       throw new Error(`Cannot send in the '${this.state}' state`);
@@ -132,6 +169,15 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
     return !envelope.to ||
           envelope.to === this.localNode ||
           this.localNode.substring(0, envelope.to.length) === envelope.to;
+  }
+}
+
+class ClientError extends Error {
+  constructor(message) {
+    super();
+
+    this.name = '';
+    this.message = message;
   }
 }
 
