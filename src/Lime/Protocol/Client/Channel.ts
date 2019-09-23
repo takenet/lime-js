@@ -22,11 +22,11 @@ export interface SessionChannel extends SessionListener {
   sendSession(session: Session): void;
 }
 
-export interface ProcessCommand extends CommandListener {
-  processCommand(command: Command): void;
+export interface CommandProcessor extends CommandListener {
+  processCommand(command: Command): Promise<Command>;
 }
 
-abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, ProcessCommand {
+abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, CommandProcessor {
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
@@ -114,7 +114,7 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
           command.timeout = true
 
           const cmd = JSON.stringify(command)
-          reject(new ClientError(cmd))
+          reject(new Error(`The follow command processing has timed out: ${cmd}`))
         }, timeout)
       })
     ])
@@ -169,15 +169,6 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
     return !envelope.to ||
           envelope.to === this.localNode ||
           this.localNode.substring(0, envelope.to.length) === envelope.to;
-  }
-}
-
-class ClientError extends Error {
-  constructor(message) {
-    super();
-
-    this.name = '';
-    this.message = message;
   }
 }
 
