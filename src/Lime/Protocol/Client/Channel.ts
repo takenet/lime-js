@@ -61,6 +61,18 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
       // Command
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
+
+        if (command.status) {
+          const responsePromise = this._commandResolves[command.id];
+
+          if (responsePromise) {
+            delete this._commandResolves[command.id]
+
+            responsePromise.resolve(command);
+            return;
+          }
+        }
+
         if (this.autoReplyPings && command.id &&
           command.uri === "/ping" &&
           command.method === CommandMethod.GET &&
@@ -95,23 +107,16 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   abstract onMessage(message: Message): void;
 
   processCommand(command: Command, timeout = this.commandTimeout): Promise<Command> {
+    const responsePromise = new Promise();
+
+    this._commandResolves[command.id] = responsePromise;
     const commandPromise = Promise.race([
-      new Promise((resolve) => {
-        this._commandResolves[command.id] = c => {
-          if (!c.status) return
-
-          resolve(c)
-
-          delete this._commandResolves[command.id]
-        }
-      }),
+      responsePromise,
       new Promise((_, reject) => {
         setTimeout(() => {
           if (!this._commandResolves[command.id]) return
 
           delete this._commandResolves[command.id]
-          command.status = 'failure'
-          command.timeout = true
 
           const cmd = JSON.stringify(command)
           reject(new Error(`The follow command processing has timed out: ${cmd}`))
