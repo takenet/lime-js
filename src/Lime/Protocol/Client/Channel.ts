@@ -38,8 +38,7 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   localNode: string;
   sessionId: string;
   state: SessionState;
-  _commandResolves: {};
-  processCommandResolver: (command: Command) => any;
+  _commandResolves: { [x: string]: (result?: any) => any };
 
   constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
     this.autoReplyPings = autoReplyPings;
@@ -67,9 +66,8 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
           const responsePromise = this._commandResolves[command.id];
 
           if (responsePromise) {
+            this._commandResolves[command.id](command);
             delete this._commandResolves[command.id]
-
-            this.processCommandResolver(command);
             return;
           }
         }
@@ -109,10 +107,9 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
 
   processCommand(command: Command, timeout = this.commandTimeout): Promise<Command> {
     const responsePromise = new Promise(resolve => {
-      this.processCommandResolver = resolve;
+      this._commandResolves[command.id] = resolve;
     });
 
-    this._commandResolves[command.id] = responsePromise;
     const commandPromise = Promise.race([
       responsePromise,
       new Promise((_, reject) => {
