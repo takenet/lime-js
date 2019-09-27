@@ -4,6 +4,7 @@ import Command, { CommandListener, CommandMethod, CommandStatus } from "../Comma
 import Notification, { NotificationListener, NotificationEvent } from "../Notification";
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
+import * as Promise from "bluebird";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
@@ -21,16 +22,23 @@ export interface SessionChannel extends SessionListener {
   sendSession(session: Session): void;
 }
 
-abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
+export interface CommandProcessor extends CommandListener {
+  processCommand(command: Command): Promise<Command>;
+}
+
+abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, CommandProcessor {
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
+
+  commandTimeout = 6000;
 
   transport: Transport;
   remoteNode: string;
   localNode: string;
   sessionId: string;
   state: SessionState;
+  _commandResolves: { [x: string]: (result?: any) => any };
 
   constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
     this.autoReplyPings = autoReplyPings;
@@ -53,6 +61,17 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
       // Command
       else if (Envelope.isCommand(envelope)) {
         const command = <Command>envelope;
+
+        if (command.status) {
+          const responsePromise = this._commandResolves[command.id];
+
+          if (responsePromise) {
+            this._commandResolves[command.id](command);
+            delete this._commandResolves[command.id]
+            return;
+          }
+        }
+
         if (this.autoReplyPings && command.id &&
           command.uri === "/ping" &&
           command.method === CommandMethod.GET &&
@@ -85,6 +104,29 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
     this.send(message);
   }
   abstract onMessage(message: Message): void;
+
+  processCommand(command: Command, timeout = this.commandTimeout): Promise<Command> {
+    const responsePromise = new Promise(resolve => {
+      this._commandResolves[command.id] = resolve;
+    });
+
+    const commandPromise = Promise.race([
+      responsePromise,
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          if (!this._commandResolves[command.id]) return
+
+          delete this._commandResolves[command.id]
+
+          const cmd = JSON.stringify(command)
+          reject(new Error(`The follow command processing has timed out: ${cmd}`))
+        }, timeout)
+      })
+    ])
+
+    this.sendCommand(command)
+    return commandPromise
+  }
 
   sendCommand(command: Command) {
     if (this.state !== SessionState.ESTABLISHED) {
