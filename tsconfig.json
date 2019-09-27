@@ -4,7 +4,11 @@
   "compilerOptions": {
     "target": "es5",
     "declaration": false,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ]
   },
   "exclude": [
     "node_modules"
