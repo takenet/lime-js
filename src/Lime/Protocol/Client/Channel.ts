@@ -4,7 +4,6 @@ import Command, { CommandListener, CommandMethod, CommandStatus } from "../Comma
 import Notification, { NotificationListener, NotificationEvent } from "../Notification";
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
-import * as Promise from "bluebird";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
@@ -23,7 +22,7 @@ export interface SessionChannel extends SessionListener {
 }
 
 export interface CommandProcessor extends CommandListener {
-  processCommand(command: Command): Promise<Command>;
+  processCommand(command: Command): Promise<any>;
 }
 
 abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, CommandProcessor {
@@ -105,7 +104,7 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   }
   abstract onMessage(message: Message): void;
 
-  processCommand(command: Command, timeout = this.commandTimeout): Promise<Command> {
+  processCommand(command: Command, timeout = this.commandTimeout): Promise<any> {
     const responsePromise = new Promise(resolve => {
       this._commandResolves[command.id] = resolve;
     });

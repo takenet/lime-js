@@ -5,7 +5,6 @@ import Session, { SessionCompression, SessionEncryption, SessionState } from "..
 import Channel from "./Channel";
 import Transport from "../Network/Transport";
 import Authentication from "../Security/Authentication";
-import * as Promise from "bluebird";
 
 export default class ClientChannel extends Channel {
 
