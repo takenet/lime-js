@@ -1,6 +1,7 @@
 # lime-js
 > Javascript implementation of LIME - A lightweight messaging library
 
+[![npm version](https://img.shields.io/npm/v/lime-js.svg?style=flat-square)](https://www.npmjs.com/package/lime-js)
 [![Build Status](https://travis-ci.org/takenet/lime-js.svg)](https://travis-ci.org/takenet/lime-js)
 
 LIME allows you to build scalable, real-time messaging applications using a JSON-based [open protocol](http://limeprotocol.org). It's **fully asynchronous** and supports any persistent transport like TCP or Websockets.
