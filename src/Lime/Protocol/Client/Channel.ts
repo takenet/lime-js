@@ -4,6 +4,7 @@ import Command, { CommandListener, CommandMethod, CommandStatus } from "../Comma
 import Notification, { NotificationListener, NotificationEvent } from "../Notification";
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
+import * as Promise from "bluebird";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
