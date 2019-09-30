@@ -187,12 +187,16 @@ declare module "lime-js" {
   interface SessionChannel extends SessionListener {
     sendSession(session: Session): void;
   }
-  abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel {
+  interface CommandProcessor extends CommandListener {
+    processCommand(command: Command, timeout: number): Promise<any>;
+  }
+  abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, CommandProcessor {
     transport: Transport;
     remoteNode: string;
     localNode: string;
     sessionId: string;
     state: SessionState;
+    commandTimeout: number;
 
     constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean);
 
@@ -207,6 +211,8 @@ declare module "lime-js" {
 
     sendSession(session: Session): void;
     abstract onSession(message: Session): void;
+
+    processCommand(command: Command, timeout: number): Promise<any>;
   }
   // Lime.Client.ClientChannel
   class ClientChannel extends Channel {

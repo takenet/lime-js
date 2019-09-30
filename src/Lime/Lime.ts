@@ -49,6 +49,7 @@ export
   , CommandChannel
   , NotificationChannel
   , SessionChannel
+  , CommandProcessor
   } from "./Protocol/Client/Channel";
 export { default as ClientChannel } from "./Protocol/Client/ClientChannel";
 

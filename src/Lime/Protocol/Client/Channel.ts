@@ -22,7 +22,7 @@ export interface SessionChannel extends SessionListener {
 }
 
 export interface CommandProcessor extends CommandListener {
-  processCommand(command: Command): Promise<any>;
+  processCommand(command: Command, timeout: number): Promise<any>;
 }
 
 abstract class Channel implements MessageChannel, CommandChannel, NotificationChannel, SessionChannel, CommandProcessor {
