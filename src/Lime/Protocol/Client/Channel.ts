@@ -30,6 +30,7 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
 
   private autoReplyPings: boolean;
   private autoNotifyReceipt: boolean;
+  private _commandResolves = {};
 
   commandTimeout = 6000;
 
@@ -38,7 +39,6 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   localNode: string;
   sessionId: string;
   state: SessionState;
-  _commandResolves: { [x: string]: (result?: any) => any };
 
   constructor(transport: Transport, autoReplyPings: boolean, autoNotifyReceipt: boolean) {
     this.autoReplyPings = autoReplyPings;
