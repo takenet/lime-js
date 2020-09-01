@@ -31,6 +31,12 @@ export
   { default as Reason
   , ReasonCodes
   } from "./Protocol/Reason";
+export
+  { default as Node
+  } from "./Protocol/Node"
+export
+  { default as Identity
+  } from "./Protocol/Identity"
 
 // Lime.Protocol.Security
 export

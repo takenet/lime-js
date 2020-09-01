@@ -5,7 +5,6 @@ import Notification, { NotificationListener, NotificationEvent } from "../Notifi
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
 import * as Promise from "bluebird";
-import { Identity } from "../Node";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;

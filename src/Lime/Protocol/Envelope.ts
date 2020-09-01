@@ -1,4 +1,5 @@
-import { Node, Identity } from './Node';
+import Identity from "./Identity";
+import Node from "./Node";
 
 interface Envelope {
   id?: string;
