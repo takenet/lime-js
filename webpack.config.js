@@ -1,12 +1,13 @@
-var webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
     'lime': './src/Lime/Lime.ts',
     'lime.min': './src/Lime/Lime.ts'
   },
+
   output: {
-    path: './dist',
+    path: __dirname + '/dist',
     filename: '[name].js',
     library: 'Lime',
     libraryTarget: 'umd',
@@ -16,18 +17,20 @@ module.exports = {
   devtool: 'source-map',
 
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+    extensions: ['.ts', '.js']
   },
 
   module: {
-    loaders: [
+    rules: [
       { test: /\.ts$/, exclude: /node_modules/, loader: 'ts-loader' }
-    ],
+    ]
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true
-    }),
-  ]
+
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        include: /\.min\.js$/,
+      })
+    ]
+  }
 };
