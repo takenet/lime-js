@@ -5,6 +5,7 @@ import Notification, { NotificationListener, NotificationEvent } from "../Notifi
 import Session, { SessionListener, SessionState } from "../Session";
 import Transport from "../Network/Transport";
 import * as Promise from "bluebird";
+import { Identity } from "../Node";
 
 export interface MessageChannel extends MessageListener {
   sendMessage(message: Message): void;
@@ -171,9 +172,8 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   }
 
   private isForMe(envelope: Envelope): boolean {
-    return !envelope.to ||
-          envelope.to === this.localNode ||
-          this.localNode.substring(0, envelope.to.length) === envelope.to;
+    return !envelope.to || envelope.to === this.localNode ||
+      Identity.parse(this.localNode) === Identity.parse(envelope.to);
   }
 }
 
