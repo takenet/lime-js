@@ -1,6 +1,6 @@
 {
   "name": "lime-js",
-  "version": "2.3.1",
+  "version": "3.0.0",
   "description": "JavaScript LIME implementation",
   "main": "dist/lime.js",
   "files": [
@@ -37,10 +37,12 @@
     "commitizen": "^2.8.2",
     "cz-conventional-changelog": "^1.1.6",
     "semantic-release": "^4.3.5",
-    "ts-loader": "^0.8.2",
-    "typescript": "^1.8.10",
-    "tslib": "1.6.0",
-    "webpack": "^1.12.9"
+    "ts-loader": "7.0.5",
+    "typescript": "3.9.7",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "4.44.1",
+    "webpack-cli": "^3.3.12",
+    "@types/bluebird": "^3.5.32"
   },
   "dependencies": {
     "bluebird": "^3.4.0"

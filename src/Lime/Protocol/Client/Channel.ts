@@ -171,9 +171,8 @@ abstract class Channel implements MessageChannel, CommandChannel, NotificationCh
   }
 
   private isForMe(envelope: Envelope): boolean {
-    return !envelope.to ||
-          envelope.to === this.localNode ||
-          this.localNode.substring(0, envelope.to.length) === envelope.to;
+    return !envelope.to || envelope.to === this.localNode ||
+      this.localNode.substring(0, envelope.to.toString().length) === envelope.to;
   }
 }
 

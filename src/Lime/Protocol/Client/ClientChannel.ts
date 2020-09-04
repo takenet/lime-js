@@ -49,7 +49,7 @@ export default class ClientChannel extends Channel {
     this.state = session.state;
 
     if (session.state === SessionState.ESTABLISHED) {
-      this.localNode = session.to;
+      this.localNode = session.to.toString();
       this.remoteNode = session.from;
     }
 

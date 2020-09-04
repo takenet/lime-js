@@ -1,12 +1,10 @@
-import Message from './Message';
-import Notification from './Notification';
-import Command from './Command';
-import Session from './Session';
+import Identity from "./Identity";
+import Node from "./Node";
 
 interface Envelope {
   id?: string;
   from?: string;
-  to?: string;
+  to?: string | Node | Identity;
   pp?: string;
   metadata?: any;
 }
