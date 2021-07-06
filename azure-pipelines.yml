@@ -22,7 +22,7 @@ resources:
 extends:
   template: template-pipeline.yml@templates    
   parameters:    
-    packagename: blip-cards-vue-components
+    packagename: lime-js
     type: javascript
     to: semantic-release
     npmCmds:
