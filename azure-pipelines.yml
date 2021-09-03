@@ -11,6 +11,16 @@ pool:
 
 variables:
 - group: npmjs-sample-variables
+- name: skipDecorator
+  value: false
+- name: sonarQubeTags
+  value: lime-js
+- name: sonarQubeKey
+  value: lime-js
+- name: sonarQubeName
+  value: Lime-js
+- name: framework
+  value: javascript
 
 resources:
   repositories:   
