@@ -37,11 +37,11 @@
     "commitizen": "^2.8.2",
     "cz-conventional-changelog": "^1.1.6",
     "semantic-release": "^4.3.5",
-    "ts-loader": "7.0.5",
+    "ts-loader": "9.4.2",
     "typescript": "3.9.7",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "4.44.1",
-    "webpack-cli": "^3.3.12",
+    "webpack": "5.75.0",
+    "webpack-cli": "^5.0.1",
     "@types/bluebird": "^3.5.32"
   },
   "dependencies": {
