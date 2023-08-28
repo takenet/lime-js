@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/takenet/lime-js#readme",
   "devDependencies": {
-    "commitizen": "^2.8.2",
+    "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^1.1.6",
     "semantic-release": "^4.3.5",
     "ts-loader": "7.0.5",
